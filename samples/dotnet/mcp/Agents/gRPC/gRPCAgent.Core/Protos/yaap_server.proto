@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Grpc.YaapServer";
+    
+package yaap_server;
+
+// The greeting service definition.
+service YaapServer {
+	// Processes an introduction from an agent
+	rpc Hello(YaapClientDetail) returns (google.protobuf.Empty);
+
+	// Processes a disconnection of an agent
+	rpc Goodbye(YaapClientDetail) returns (google.protobuf.Empty);
+}
+
+message YaapClientDetail {
+	string name = 1;
+	string description = 2;
+	optional string callbackUrl = 3;
+}

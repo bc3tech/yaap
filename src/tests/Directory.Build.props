@@ -1,0 +1,30 @@
+<Project>
+	<Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Build.props, $(MSBuildThisFileDirectory)..))" />
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<IncludeSymbols>False</IncludeSymbols>
+		<EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Moq.AutoMock" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(IsTestProject)' == 'true'">
+		<Using Include="Xunit" />
+
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Condition="'$(IsTestProject)' == 'true'" />
+		<PackageReference Include="xunit" Condition="'$(IsTestProject)' == 'true'" />
+		<PackageReference Include="coverlet.collector" Condition="'$(IsTestProject)' == 'true'">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="xunit.runner.visualstudio" Condition="'$(IsTestProject)' == 'true'">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>

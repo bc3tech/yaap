@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ApiClient.cs" Link="ApiClient.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ApiException.cs" Link="ApiException.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ApiResponse.cs" Link="ApiResponse.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ClientUtils.cs" Link="ClientUtils.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\Configuration.cs" Link="Configuration.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\CustomJsonCodec.cs" Link="CustomJsonCodec.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ExceptionFactory.cs" Link="ExceptionFactory.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\GlobalConfiguration.cs" Link="GlobalConfiguration.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\HttpMethod.cs" Link="HttpMethod.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\IApiAccessor.cs" Link="IApiAccessor.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\IAsynchronousClient.cs" Link="IAsynchronousClient.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\IReadableConfiguration.cs" Link="IReadableConfiguration.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\ISynchronousClient.cs" Link="ISynchronousClient.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\RequestOptions.cs" Link="RequestOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RestSharp" />
+  </ItemGroup>
+</Project>

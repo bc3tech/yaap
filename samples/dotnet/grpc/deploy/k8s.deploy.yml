@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yaap-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaap-grpc
+  template:
+    metadata:
+      labels:
+        app: yaap-grpc
+    spec:
+      containers:
+        - name: orchestrator
+          image: yaap-grpc-orchestrator
+          imagePullPolicy: IfNotPresent
+        - name: teamsagent
+          image: yaap-grpc-teamsagent
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+spec:
+  selector:
+    app: yaap-grpc
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: yaap-grpc
+  ports:
+    - port: 7126 # Port on the Service (external)
+      targetPort: 8080 # Port on the Pods (internal)
+      protocol: TCP

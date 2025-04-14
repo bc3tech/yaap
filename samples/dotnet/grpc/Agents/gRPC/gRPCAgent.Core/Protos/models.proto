@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Grpc.Models";
+
+package models;
+
+message AnswerRequest {
+	string prompt = 1;
+}
+
+message AnswerResponse {
+	string completion = 1;
+}
+
+message StreamResponse {
+	string token = 1;
+}
+
+message YaapClientDetail {
+	string name = 1;
+	string description = 2;
+	optional string callbackUrl = 3;
+}

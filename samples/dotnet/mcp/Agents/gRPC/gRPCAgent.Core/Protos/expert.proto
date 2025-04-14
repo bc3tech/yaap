@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+
+import "models.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Grpc.Expert";
+    
+package expert;
+
+service Expert {
+	rpc SayHello (google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    rpc GetAnswer (models.AnswerRequest) returns (models.AnswerResponse);
+
+    rpc GetAnswerStream(models.AnswerRequest) returns (stream models.StreamResponse);
+	
+    rpc SayGoodbye(google.protobuf.Empty) returns (google.protobuf.Empty);
+}

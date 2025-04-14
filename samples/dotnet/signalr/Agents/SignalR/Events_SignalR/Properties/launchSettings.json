@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Events_SignalR": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "models.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Grpc.Orchestrator";
+    
+package orchestrator;
+
+// The greeting service definition.
+service Orchestrator {
+    // Include the expert GetAnswer RPC method
+    rpc GetAnswer(models.AnswerRequest) returns (models.AnswerResponse);
+    rpc GetAnswerStream(models.AnswerRequest) returns (stream models.StreamResponse);
+
+	// Processes a message from an agent
+	rpc Message(MessageRequest) returns (google.protobuf.Empty);
+}
+
+message MessageRequest {
+	string message = 1;
+}
