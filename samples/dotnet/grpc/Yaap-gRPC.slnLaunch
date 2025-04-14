@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "gRPC sample",
+    "Projects": [
+      {
+        "Path": "Agents\\gRPC\\Orchestrator_gRPC\\Orchestrator_gRPC.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "Agents\\gRPC\\Teams_gRPC\\Teams_gRPC.csproj",
+        "Action": "Start",
+        "DebugTarget": "Teams_gRPC"
+      },
+      {
+        "Path": "TBAStatReader_gRPC\\ConsoleApp.csproj",
+        "Action": "Start",
+        "DebugTarget": "ConsoleApp"
+      }
+    ]
+  }
+]

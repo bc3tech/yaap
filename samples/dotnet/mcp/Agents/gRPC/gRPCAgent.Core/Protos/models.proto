@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc.Models";
+   
+package models;
+
+message AnswerRequest {
+	bytes chatHistory = 1;
+}
+
+message AnswerResponse {
+	bytes chatHistory  = 1;
+	string completion = 2;
+}
+
+message StreamResponse {
+	string token = 1;
+}

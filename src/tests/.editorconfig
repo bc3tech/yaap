@@ -1,0 +1,21 @@
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
+
+[*.cs]
+
+# EA0014: The async method doesn't support cancellation
+dotnet_diagnostic.EA0014.severity = none
+
+# CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = none
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = none
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = none
+
+# VSTHRD003: Avoid awaiting foreign Tasks
+dotnet_diagnostic.VSTHRD003.severity = none
+
+# EA0002: Use 'System.TimeProvider' to make the code easier to test
+dotnet_diagnostic.EA0002.severity = none

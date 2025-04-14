@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "MCP sample",
+    "Projects": [
+      {
+        "Path": "AgentsMcpServer\\AgentsMcpServer.csproj",
+        "Action": "Start",
+        "DebugTarget": "AgentMcpServer"
+      },
+      {
+        "Path": "Agents\\gRPC\\Orchestrator_gRPC\\Orchestrator_gRPC.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "TBAStatReader_gRPC\\ConsoleApp.csproj",
+        "Action": "Start",
+        "DebugTarget": "ConsoleApp"
+      },
+      {
+        "Path": "Agents\\gRPC\\Teams_gRPC\\Teams_gRPC.csproj",
+        "Action": "Start",
+        "DebugTarget": "Teams_gRPC"
+      }
+    ]
+  }
+]

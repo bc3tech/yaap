@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>a74edbc7-6f1b-4f8f-ac34-6a5b90c653cd</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Api\EventApi.cs" Link="EventApi.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\DistrictList.cs" Link="Models\DistrictList.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\Event.cs" Link="Models\Event.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventDistrictPoints.cs" Link="Models\EventDistrictPoints.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventDistrictPointsPoints.cs" Link="Models\EventDistrictPointsPoints.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventDistrictPointsTiebreakers.cs" Link="Models\EventDistrictPointsTiebreakers.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventInsights.cs" Link="Models\EventInsights.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventInsights2016.cs" Link="Models\EventInsights2016.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventInsights2017.cs" Link="Models\EventInsights2017.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventInsights2018.cs" Link="Models\EventInsights2018.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventOPRs.cs" Link="Models\EventOPRs.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventRanking.cs" Link="Models\EventRanking.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventRankingExtraStatsInfo.cs" Link="Models\EventRankingExtraStatsInfo.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventRankingRankings.cs" Link="Models\EventRankingRankings.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventRankingSortOrderInfo.cs" Link="Models\EventRankingSortOrderInfo.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\EventSimple.cs" Link="Models\EventSimple.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Agent.Core\Agent.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<DependentUpon>appsettings.json</DependentUpon>
+		</Content>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="JsonCons.JmesPath" />
+		<PackageReference Include="Azure.Identity" />
+		<PackageReference Include="Microsoft.Azure.SignalR.Management" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Dockerfile">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Models\" />
+	</ItemGroup>
+</Project>

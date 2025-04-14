@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36015.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Server.Abstractions", "Server\Yaap.Server.Abstractions.csproj", "{9D514749-514A-4D39-B9F7-47450318130B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Client.Abstractions", "Client\Yaap.Client.Abstractions.csproj", "{E4D9372D-E794-48F1-9F96-13008FDB4725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Core", "Models\Yaap.Core.csproj", "{6522849E-7C87-454C-8B16-EE7522F0585D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}"
+	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
+		tests\Directory.Build.props = tests\Directory.Build.props
+		tests\Directory.Packages.props = tests\Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Client.Tests", "tests\Yaap.Client.Tests\Yaap.Client.Tests.csproj", "{09979BB7-7796-4AC2-98CA-6631F48366FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.TestCommon", "tests\Yaap.TestCommon\Yaap.TestCommon.csproj", "{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Server.Tests", "tests\Yaap.Server.Tests\Yaap.Server.Tests.csproj", "{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SemanticKernel", "SemanticKernel", "{6582BB8F-EAE8-47AD-BE4C-712C8594D650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Server.SemanticKernel", "SemanticKernel\Server\Yaap.Server.SemanticKernel.csproj", "{C059739A-8C8D-8C71-3860-8504C2635F2B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D514749-514A-4D39-B9F7-47450318130B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C059739A-8C8D-8C71-3860-8504C2635F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C059739A-8C8D-8C71-3860-8504C2635F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C059739A-8C8D-8C71-3860-8504C2635F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C059739A-8C8D-8C71-3860-8504C2635F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09979BB7-7796-4AC2-98CA-6631F48366FF} = {0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D} = {0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}
+		{D26B9EC9-9C18-4D07-859A-5B410F8CDEBA} = {0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}
+		{C059739A-8C8D-8C71-3860-8504C2635F2B} = {6582BB8F-EAE8-47AD-BE4C-712C8594D650}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2D52AA44-0E0D-430F-8B13-A417EBC09C35}
+	EndGlobalSection
+EndGlobal

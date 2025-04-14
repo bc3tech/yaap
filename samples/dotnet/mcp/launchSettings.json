@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "teams_agent": "StartWithoutDebugging",
+        "orchestrator": "StartWithoutDebugging",
+        "mcpserver": "StartWithoutDebugging"
+      }
+    }
+  }
+}

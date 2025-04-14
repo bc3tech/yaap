@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Client\Yaap.Client.Abstractions.csproj" />
+    <ProjectReference Include="..\Yaap.TestCommon\Yaap.TestCommon.csproj" />
+  </ItemGroup>
+
+</Project>

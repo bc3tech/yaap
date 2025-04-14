@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yaap-mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaap-mcp
+  template:
+    metadata:
+      labels:
+        app: yaap-mcp
+    spec:
+      containers:
+        - name: mcp-server
+          image: yaap-mcp-server
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+        - name: orchestrator
+          image: yaap-mcp-orchestrator
+          imagePullPolicy: IfNotPresent
+        - name: teamsagent
+          image: yaap-mcp-teamsagent
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+spec:
+  selector:
+    app: yaap-mcp
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: yaap-mcp
+  ports:
+    - port: 7126 # Port on the Service (external)
+      targetPort: 8080 # Port on the Pods (internal)
+      protocol: TCP

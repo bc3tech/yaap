@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+#    - name: Add msbuild to PATH
+#      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+      with:
+        nuget-api-key: ${{ secrets.NuGetAPIKey }}
+        
+    - name: Setup DotNet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.101'
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.NuGetAPIKey }}
+
+    - name: Restore NuGet Packages
+      run: nuget restore TBAAPI.V3Client.sln
+
+    - name: Build
+      run: dotnet build --configuration Release TBAAPI.V3Client.sln
+
+#    - name: Build and Publish Web App
+#      run: msbuild TBAAPI.V3Client.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+
+    - name: Create the package
+      run: dotnet pack --configuration Release TBAAPI.V3Client.sln
+
+    - name: Publish the package to NuGet
+      run: dotnet nuget push src/TBAAPI.V3Client/bin/Release/*.nupkg
+
+#    - name: Test
+#      shell: sh
+#      run: ./mono_nunit_test.sh
+#    - name: Publish
+#      shell: bash
+#      run: dotnet nuget push
+#  publish:
+#    runs-on: windows-latest
+#    steps:
+#    - uses: actions/checkout@v2 
+#    - name: Publish to NuGet
+#      uses: rohith/publish-nuget@v2.1.2
+#      with:
+#        # Filepath of the project to be packaged, relative to root of repository
+#        PROJECT_FILE_PATH: TBAAPI.V3Client.sln
+#        # Filepath containing version info, relative to root of repository. Defaults to `PROJECT_FILE_PATH` if not specified
+#        VERSION_FILE_PATH: README.md # optional
+#        # Regex (with version in a capturing group) to extract the version from `VERSION_FILE_PATH`
+#        VERSION_REGEX: 'SDK version: ((?:\d\.?)+)' # optional, default is <Version>(.*)<\/Version>
+#        # Whether to create a tag when there's a version change
+#        TAG_COMMIT: false # optional, default is true
+#        # Format of the tag, `*` is the placeholder for actual version
+#        #TAG_FORMAT: # optional, default is v*
+#        # API key for the NuGet feed
+#        NUGET_KEY: ${{ secrets.NuGetAPIKey }} # optional
+#        # NuGet package name, required when it's different from the project name
+#        #PACKAGE_NAME: # optional

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yaap-signalr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaap-signalr
+  template:
+    metadata:
+      labels:
+        app: yaap-signalr
+    spec:
+      containers:
+        - name: hub
+          image: yaap-signalr-hub
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7128
+        - name: orchestrator
+          image: yaap-signalr-orchestrator
+          imagePullPolicy: IfNotPresent
+        - name: districtsagent
+          image: yaap-signalr-districtsagent
+          imagePullPolicy: IfNotPresent
+        - name: teamsagent
+          image: yaap-signalr-teamsagent
+          imagePullPolicy: IfNotPresent
+        - name: eventsagent
+          image: yaap-signalr-eventsagent
+          imagePullPolicy: IfNotPresent
+        - name: matchesagent
+          image: yaap-signalr-matchesagent
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+spec:
+  selector:
+    app: yaap-signalr
+  ports:
+    - port: 7128
+      targetPort: 7128
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: yaap-signalr
+  ports:
+    - port: 8080 # Port on the Service (external)
+      targetPort: 7128 # Port on the Pods (internal)
+      protocol: TCP

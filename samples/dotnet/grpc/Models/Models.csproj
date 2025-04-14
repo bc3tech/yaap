@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\OpenAPIDateConverter.cs" Link="Json\OpenAPIDateConverter.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Client\OpenAPIEnumConverter.cs" Link="Json\OpenAPIEnumConverter.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Json\JsonStringEnumConverterWithEnumMemberSupport.cs" Link="Json\JsonStringEnumConverterWithEnumMemberSupport.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\APIStatus.cs" Link="APIStatus.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\APIStatusAppVersion.cs" Link="APIStatusAppVersion.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\Award.cs" Link="Award.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\AwardRecipient.cs" Link="AwardRecipient.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\EliminationAlliance.cs" Link="EliminationAlliance.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\EliminationAllianceBackup.cs" Link="EliminationAllianceBackup.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\EliminationAllianceStatus.cs" Link="EliminationAllianceStatus.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\Enums.cs" Link="Enums.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\Media.cs" Link="Media.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\Webcast.cs" Link="Webcast.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\WLTRecord.cs" Link="WLTRecord.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\Zebra.cs" Link="Zebra.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\ZebraAlliances.cs" Link="ZebraAlliances.cs" />
+    <Compile Include="..\tba-client\src\TBAAPI.V3Client\Model\ZebraTeam.cs" Link="ZebraTeam.cs" />
+  </ItemGroup>
+
+</Project>
