@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "davidanson.vscode-markdownlint",
+        "bierner.markdown-mermaid"
+    ]
+}
