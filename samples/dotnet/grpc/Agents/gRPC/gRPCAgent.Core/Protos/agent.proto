@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+import "expert.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Agent_gRPC";
+    
+package agent;
+
+service Agent {
+	rpc Reintroduce (google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    // Include the expert GetAnswer RPC method
+    rpc GetAnswer (expert.AnswerRequest) returns (expert.AnswerResponse);
+
+    rpc GetAnswerStream(expert.AnswerRequest) returns (stream expert.StreamResponse);
+}

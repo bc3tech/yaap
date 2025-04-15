@@ -1,0 +1,26 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="Azure.Identity" Version="1.13.1" />
+    <PackageVersion Include="Grpc.AspNetCore.Server.Reflection" Version="2.67.0" />
+    <PackageVersion Include="JmesPath.Net" Version="1.0.330" />
+    <PackageVersion Include="JsonCons.JmesPath" Version="1.0.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.57.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.10" />
+    <PackageVersion Include="Microsoft.Azure.SignalR" Version="1.28.0" />
+    <PackageVersion Include="Microsoft.Azure.SignalR.Management" Version="1.28.0" />
+    <PackageVersion Include="Microsoft.Extensions.EnumStrings" Version="8.0.0-rc.2.23510.2" />
+    <PackageVersion Include="Microsoft.Extensions.ExtraAnalyzers" Version="8.0.0-rc.2.23510.2" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.KernelMemory.SemanticKernelPlugin" Version="0.35.240321.1" />
+    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.27.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.27.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading" Version="17.11.20" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.11.20" />
+    <PackageVersion Include="RestSharp" Version="106.15.0" />
+    <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Expert_gRPC";
+
+package expert;
+
+service Expert {
+	rpc GetAnswer (AnswerRequest) returns (AnswerResponse);
+    rpc GetAnswerStream(AnswerRequest) returns (stream StreamResponse);
+}
+
+message AnswerRequest {
+	string prompt = 1;
+}
+
+message AnswerResponse {
+	string completion = 1;
+}
+
+message StreamResponse {
+	string token = 1;
+}

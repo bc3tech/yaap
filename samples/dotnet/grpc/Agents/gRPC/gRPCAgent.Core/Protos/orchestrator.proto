@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "expert.proto";
+
+option csharp_namespace = "Orchestrator_gRPC";
+    
+package orchestrator;
+
+// The greeting service definition.
+service Orchestrator {
+    // Include the expert GetAnswer RPC method
+    rpc GetAnswer (expert.AnswerRequest) returns (expert.AnswerResponse);
+    rpc GetAnswerStream(expert.AnswerRequest) returns (stream expert.StreamResponse);
+
+	// Processes a message from an agent
+	rpc Message (MessageRequest) returns (google.protobuf.Empty);
+
+	// Processes an introduction from an agent
+	rpc Introduce (AgentDetail) returns (IntroResponse);
+
+	// Processes a disconnection of an agent
+	rpc Goodbye(AgentDetail) returns (google.protobuf.Empty);
+
+	rpc RegisterListener(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message MessageRequest {
+	string message = 1;
+}
+
+// The request message containing Agent details.
+message AgentDetail {
+  string name = 1;
+  optional string description = 2;
+  string callbackAddress = 3;
+}
+
+// The response message containing the greetings.
+message IntroResponse {
+  bool success = 1;
+  string message = 2;
+}
