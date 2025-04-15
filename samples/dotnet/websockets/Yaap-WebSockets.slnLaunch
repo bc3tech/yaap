@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Websockets Demo",
+    "Projects": [
+      {
+        "Path": "Agents\\WebSockets\\Orchestrator_WS\\Orchestrator_WS.csproj",
+        "Action": "Start",
+        "DebugTarget": "Orchestrator_WS"
+      },
+      {
+        "Path": "Agents\\WebSockets\\Teams_WS\\Teams_WS.csproj",
+        "Action": "Start",
+        "DebugTarget": "Teams_WS"
+      },
+      {
+        "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
+        "Action": "Start",
+        "DebugTarget": "TBAStatReader_WS"
+      }
+    ]
+  }
+]

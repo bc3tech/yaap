@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Teams_WS": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:50955;http://localhost:50956"
+    }
+  }
+}

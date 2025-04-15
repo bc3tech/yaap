@@ -1,0 +1,10 @@
+name: yaap-ws
+services:
+  orchestrator:
+    image: yaap-ws-orchestrator
+  teamsagent:
+    image: yaap-ws-teamsagent
+    depends_on:
+      - orchestrator
+networks:
+  default:
