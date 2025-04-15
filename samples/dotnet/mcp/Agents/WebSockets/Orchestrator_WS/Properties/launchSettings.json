@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Orchestrator_WS": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+    }
+  }
+}

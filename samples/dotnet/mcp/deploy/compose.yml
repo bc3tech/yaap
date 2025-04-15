@@ -1,0 +1,27 @@
+services:
+  hub:
+    image: signalrhub
+    ports:
+      - "7126:8080"
+  orchestrator:
+    image: orchestrator
+    depends_on:
+      - hub
+  districtsagent:
+    image: districtsagent
+    depends_on:
+      - orchestrator
+  eventsagent:
+    image: eventsagent
+    depends_on:
+      - orchestrator
+  matchesagent:
+    image: matchesagent
+    depends_on:
+      - orchestrator
+  teamsagent:
+    image: teamsagent
+    depends_on:
+      - orchestrator
+networks:
+  default:
