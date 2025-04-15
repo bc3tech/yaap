@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Teams_SignalR": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+name: yaap-signalr
+services:
+  hub:
+    image: yaap-signalr-hub
+    ports:
+      - "7126:8080"
+  orchestrator:
+    image: yaap-signalr-orchestrator
+    depends_on:
+      - hub
+  districtsagent:
+    image: yaap-signalr-districtsagent
+    depends_on:
+      - orchestrator
+  eventsagent:
+    image: yaap-signalr-eventsagent
+    depends_on:
+      - orchestrator
+  matchesagent:
+    image: yaap-signalr-matchesagent
+    depends_on:
+      - orchestrator
+  teamsagent:
+    image: yaap-signalr-teamsagent
+    depends_on:
+      - orchestrator
+networks:
+  default:

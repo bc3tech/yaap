@@ -1,0 +1,3 @@
+[submodule "tba-client"]
+	path = tba-client
+	url = https://bc3tech@github.com/bc3tech/tba-api-client-csharp-netcore.git

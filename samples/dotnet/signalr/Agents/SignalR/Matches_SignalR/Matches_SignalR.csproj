@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>f3b45348-9c0d-4b66-aa62-2228d0369fbe</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Agent.Core\Agent.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Api\MatchApi.cs" Link="MatchApi.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\Match.cs" Link="Models\Match.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchAlliance.cs" Link="Models\MatchAlliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2015.cs" Link="Models\MatchScoreBreakdown2015.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2015Alliance.cs" Link="Models\MatchScoreBreakdown2015Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2016.cs" Link="Models\MatchScoreBreakdown2016.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2016Alliance.cs" Link="Models\MatchScoreBreakdown2016Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2017.cs" Link="Models\MatchScoreBreakdown2017.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2017Alliance.cs" Link="Models\MatchScoreBreakdown2017Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2018.cs" Link="Models\MatchScoreBreakdown2018.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2018Alliance.cs" Link="Models\MatchScoreBreakdown2018Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2019.cs" Link="Models\MatchScoreBreakdown2019.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2019Alliance.cs" Link="Models\MatchScoreBreakdown2019Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2020.cs" Link="Models\MatchScoreBreakdown2020.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchScoreBreakdown2020Alliance.cs" Link="Models\MatchScoreBreakdown2020Alliance.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchSimple.cs" Link="Models\MatchSimple.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchSimpleAlliances.cs" Link="Models\MatchSimpleAlliances.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchTimeseries2018.cs" Link="Models\MatchTimeseries2018.cs" />
+		<Compile Include="..\..\..\tba-client\src\TBAAPI.V3Client\Model\MatchVideos.cs" Link="Models\MatchVideos.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<DependentUpon>appsettings.json</DependentUpon>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="JsonCons.JmesPath" />
+		<PackageReference Include="Azure.Identity" />
+		<PackageReference Include="Microsoft.Azure.SignalR.Management" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Dockerfile">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Models\" />
+	</ItemGroup>
+</Project>
