@@ -40,31 +40,31 @@ if (-not $NoDocker) {
     Start-Job -Name "Image Orchestrator" {
         param($secret, $outDir)
 
-        docker build -t yaap-signalr-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate
+        docker build -t yaap-signalr-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:7128/api/negotiate
     } -ArgumentList (GetSecretObject '1507d29c-61b1-4678-b23a-1562ed1a1abb'), $outputDir
 
     Start-Job -Name "Image Districts Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-signalr-districtsagent $outDir\districtsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-signalr-districtsagent $outDir\districtsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:7128/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject 'f724ee6c-8bf6-4796-904d-69463aba9287'), $outputDir
 
     Start-Job -Name "Image Events Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-signalr-eventsagent $outDir\eventsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-signalr-eventsagent $outDir\eventsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:7128/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject 'a74edbc7-6f1b-4f8f-ac34-6a5b90c653cd'), $outputDir
 
     Start-Job -Name "Image Matches Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-signalr-matchesagent $outDir\matchesagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-signalr-matchesagent $outDir\matchesagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:7128/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject 'f3b45348-9c0d-4b66-aa62-2228d0369fbe'), $outputDir
 
     Start-Job -Name "Image Teams Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-signalr-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-signalr-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:7128/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject '5631e549-948c-4903-be18-a06152c3600c'), $outputDir
     
     Get-Job | Wait-Job 

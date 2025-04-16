@@ -55,6 +55,6 @@ spec:
   selector:
     app: tba-multiagent
   ports:
-    - port: 7126 # Port on the Service (external)
+    - port: 7128 # Port on the Service (external)
       targetPort: 8080 # Port on the Pods (internal)
       protocol: TCP

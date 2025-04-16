@@ -4,29 +4,33 @@
     "Projects": [
       {
         "Path": "SignalRHub\\SignalRHub.csproj",
-        "Action": "StartWithoutDebugging",
+        "Action": "Start",
         "DebugTarget": "http"
       },
       {
         "Path": "Agents\\SignalR\\Orchestrator_SignalR\\Orchestrator_SignalR.csproj",
-        "Action": "StartWithoutDebugging",
+        "Action": "Start",
         "DebugTarget": "Orchestrator_SignalR"
       },
       {
         "Path": "Agents\\SignalR\\Teams_SignalR\\Teams_SignalR.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "Teams_SignalR"
       },
       {
         "Path": "Agents\\SignalR\\Matches_SignalR\\Matches_SignalR.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "Matches_SignalR"
       },
       {
         "Path": "Agents\\SignalR\\Events_SignalR\\Events_SignalR.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "Events_SignalR"
       },
       {
         "Path": "Agents\\SignalR\\Districts_SignalR\\Districts_SignalR.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "Districts_SignalR"
       },
       {
         "Path": "TBAStatReader\\TBAStatReader.csproj",
