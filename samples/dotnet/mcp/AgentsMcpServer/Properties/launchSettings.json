@@ -4,14 +4,14 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "httpPort": 5272
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "httpPort": 5272
+      }
     }
   }
 }

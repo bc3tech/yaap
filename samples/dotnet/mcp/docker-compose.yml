@@ -1,35 +1,5 @@
 name: yaap-mcp
 services:
-  teams_agent:
-    hostname: teams_agent
-    image: ${DOCKER_REGISTRY-}yaap-mcp-teamsagent
-    build:
-      context: .
-      dockerfile: Agents/WebSockets/Teams_WS/Dockerfile
-    environment:
-      - OrchestratorEndpoint=ws://mcpserver:5272/ws/register
-      - ASPNETCORE_HTTP_PORTS=5173
-    networks:
-      - default
-    depends_on:
-      - orchestrator
-
-  orchestrator:
-    hostname: orchestrator
-    image: ${DOCKER_REGISTRY-}yaap-mcp-orchestrator
-    build:
-      context: .
-      dockerfile: Agents/WebSockets/Orchestrator_WS/Dockerfile
-    environment:
-      - OrchestratorEndpoint=http://mcpserver:5272/sse
-      - ASPNETCORE_HTTP_PORTS=5172
-    ports:
-      - "5172:5172"
-    networks:
-      - default
-    depends_on:
-      - mcpserver
-
   mcpserver:
     hostname: mcpserver
     image: ${DOCKER_REGISTRY-}yaap-mcp-server
@@ -38,9 +8,36 @@ services:
       dockerfile: AgentsMcpServer/Dockerfile
     environment:
       - ASPNETCORE_HTTP_PORTS=5272
-    networks:
-      - default
+      # - URLS=http://0.0.0.0:5272
+
+  orchestrator:
+    hostname: orchestrator
+    image: ${DOCKER_REGISTRY-}yaap-mcp-orchestrator
+    build:
+      context: .
+      dockerfile: Agents/WebSockets/Orchestrator_WS/Dockerfile
+    environment:
+      - McpServerEndpoint=http://mcpserver:5272/sse
+      - ASPNETCORE_HTTP_PORTS=5172
+      # - URLS=http://0.0.0.0:5172
+    ports:
+      - "5172:5172"
+    depends_on:
+      - mcpserver
+
+  teams_agent:
+    hostname: teams_agent
+    image: ${DOCKER_REGISTRY-}yaap-mcp-teamsagent
+    build:
+      context: .
+      dockerfile: Agents/WebSockets/Teams_WS/Dockerfile
+    environment:
+      - McpServerEndpoint=ws://mcpserver:5272/ws/register
+      - ASPNETCORE_HTTP_PORTS=5173
+      # - URLS=http://0.0.0.0:5173
+    depends_on:
+      - mcpserver
+      - orchestrator  
 
 networks:
   default:
-    enable_ipv6: false

@@ -54,15 +54,27 @@ internal class Server(IServiceProvider sp) : Expert(sp)
         _log.AddingExpertNameToPanel(name);
         _log.RequestRequest(request);
 
-        var agentClient = new ClientWebSocket();
+        ClientWebSocket? agentClient = null;
         UriBuilder b = new UriBuilder(request.GetProperty("Secured").GetBoolean() ? "wss" : "ws",
             Throws.IfNullOrWhiteSpace(request.GetProperty("Hostname").GetString()),
             request.GetProperty("CallbackPort").GetInt16(),
             "/ws/agent");
-        await agentClient.ConnectAsync(b.Uri, cancellationToken);
+        do
+        {
+            try
+            {
+                agentClient = new ClientWebSocket();
+                await agentClient.ConnectAsync(b.Uri, cancellationToken);
+            }
+            catch (WebSocketException e)
+            {
+                _log.LogError(e.Message);
+                await Task.Delay(1000);
+            }
+        } while (agentClient?.State is not WebSocketState.Open);
 
         _expertConnections[name] = agentClient;
-        _expertIPAddresses[request.GetProperty("Hostname").GetString()] = name;
+        _expertIPAddresses[_contextAccessor.HttpContext!.Connection.RemoteIpAddress!] = name;
 
         var description = request.GetProperty("Description").GetString();
         var mcpTool = McpServerTool.Create(AIFunctionFactory.Create(async (string action, ChatHistory prompt) =>

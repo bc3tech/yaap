@@ -18,7 +18,7 @@ using Microsoft.SemanticKernel.ChatCompletion;
 internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration) : IHostedService
 {
     private readonly ILogger _log = loggerFactory.CreateLogger<Worker>();
-    private readonly string _OrchestratorEndpoint = Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
+    private readonly string _McpServerEndpoint = Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.McpServerEndpoint]);
 
     internal static bool WaitingForResponse = false;
 
@@ -42,7 +42,7 @@ internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration
 
         var client = new ClientWebSocket();
         // Connect the WebSocket to the endpoint
-        await client.ConnectAsync(new Uri(_OrchestratorEndpoint), cancellationToken);
+        await client.ConnectAsync(new Uri(_McpServerEndpoint), cancellationToken);
 
         do
         {

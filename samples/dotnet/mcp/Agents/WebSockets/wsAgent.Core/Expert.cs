@@ -42,20 +42,20 @@ public abstract class Expert : IHostedService
         this.Name = Throws.IfNullOrWhiteSpace(_config[Constants.Configuration.Paths.AgentName]);
         _log = sp.GetRequiredService<ILoggerFactory>().CreateLogger(this.Name);
 
-        this.Description = _config[Constants.Configuration.Paths.AgentDescription];
-        var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
-        if (securePort is not null)
-        {
-            this.CallbackPort = int.Parse(securePort);
-            this.Secured = true;
-        }
-        else
-        {
-            this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
-        }
-
         if (this.PerformsIntroduction)
         {
+            this.Description = _config[Constants.Configuration.Paths.AgentDescription];
+            var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
+            if (securePort is not null)
+            {
+                this.CallbackPort = int.Parse(securePort);
+                this.Secured = true;
+            }
+            else
+            {
+                this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
+            }
+
             _webSocket = new ClientWebSocket();
         }
     }
@@ -72,7 +72,7 @@ public abstract class Expert : IHostedService
 
         if (this.PerformsIntroduction && _webSocket is not null)
         {
-            var uri = new Uri(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint]!);
+            var uri = new Uri(_config[Constants.Configuration.VariableNames.McpServerEndpoint]!);
             await _webSocket.ConnectAsync(uri, cancellationToken).ConfigureAwait(false);
             await IntroduceAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -87,7 +87,10 @@ public abstract class Expert : IHostedService
             await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken).ConfigureAwait(false);
         }
 
-        _log.SayingGoodbyeToOrchestrator(cancellationToken.IsCancellationRequested);
+        if (this.PerformsIntroduction)
+        {
+            _log.SayingGoodbyeToOrchestrator(cancellationToken.IsCancellationRequested);
+        }
     }
 
     protected virtual bool PerformsIntroduction { get; } = true;

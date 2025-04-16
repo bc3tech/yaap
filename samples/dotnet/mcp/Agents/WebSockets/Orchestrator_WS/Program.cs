@@ -11,7 +11,7 @@ IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
     .AddSemanticKernel();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IClientTransport>(sp => new SseClientTransport(new() { Endpoint = new(builder.Configuration[Constants.Configuration.VariableNames.OrchestratorEndpoint]!) }, sp.GetRequiredService<IHttpClientFactory>().CreateClient("mcpClient"), sp.GetService<ILoggerFactory>()));
+builder.Services.AddSingleton<IClientTransport>(sp => new SseClientTransport(new() { Endpoint = new(builder.Configuration[Constants.Configuration.VariableNames.McpServerEndpoint]!) }, sp.GetRequiredService<IHttpClientFactory>().CreateClient("mcpClient"), sp.GetService<ILoggerFactory>()));
 
 WebApplication app = ((WebApplicationBuilder)builder).Build();
 

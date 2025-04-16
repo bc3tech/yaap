@@ -1,6 +1,6 @@
 [
   {
-    "Name": "MCP demo",
+    "Name": "MCP sample",
     "Projects": [
       {
         "Path": "AgentsMcpServer\\AgentsMcpServer.csproj",
@@ -25,26 +25,17 @@
     ]
   },
   {
-    "Name": "MCP demo (docker)",
+    "Name": "MCP sample (docker)",
     "Projects": [
       {
-        "Path": "AgentsMcpServer\\AgentsMcpServer.csproj",
+        "Path": "docker-compose.dcproj",
         "Action": "Start",
-        "DebugTarget": "Container (Dockerfile)"
-      },
-      {
-        "Path": "Agents\\WebSockets\\Orchestrator_WS\\Orchestrator_WS.csproj",
-        "Action": "Start",
-        "DebugTarget": "Container (Dockerfile)"
-      },
-      {
-        "Path": "Agents\\WebSockets\\Teams_WS\\Teams_WS.csproj",
-        "Action": "Start",
-        "DebugTarget": "Container (Dockerfile)"
+        "DebugTarget": "Docker Compose"
       },
       {
         "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
-        "Action": "Start"
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "TBAStatReader_WS"
       }
     ]
   }
