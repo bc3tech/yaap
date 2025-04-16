@@ -28,13 +28,13 @@ if (-not $NoDocker) {
     Start-Job -Name "Image Orchestrator" {
         param($secret, $outDir)
 
-        docker build -t orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey)
+        docker build -t yaap-grpc-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey)
     } -ArgumentList (GetSecretObject '1507d29c-61b1-4678-b23a-1562ed1a1abb'), $outputDir
 
     Start-Job -Name "Image Teams Agent" {
         param($secret, $outDir)
 
-        docker build -t teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://orchestrator:5173 --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-grpc-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://orchestrator:5173 --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject '5631e549-948c-4903-be18-a06152c3600c'), $outputDir
     
     Get-Job | Wait-Job 

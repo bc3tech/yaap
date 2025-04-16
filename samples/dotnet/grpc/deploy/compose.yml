@@ -1,12 +1,12 @@
 name: yaap-grpc
 services:
   orchestrator:
-    image: orchestrator
+    image: ${DOCKER_REGISTRY-}yaap-grpc-orchestrator
     ports:
       - "5173:5173"
 
   teamsagent:
-    image: teamsagent
+    image: ${DOCKER_REGISTRY-}yaap-grpc-teamsagent
     environment:
       - URLS=http://teamsagent:5000
     depends_on:

@@ -8,7 +8,6 @@ services:
       dockerfile: AgentsMcpServer/Dockerfile
     environment:
       - ASPNETCORE_HTTP_PORTS=5272
-      # - URLS=http://0.0.0.0:5272
 
   orchestrator:
     hostname: orchestrator
@@ -19,7 +18,6 @@ services:
     environment:
       - McpServerEndpoint=http://mcpserver:5272/sse
       - ASPNETCORE_HTTP_PORTS=5172
-      # - URLS=http://0.0.0.0:5172
     ports:
       - "5172:5172"
     depends_on:
@@ -34,7 +32,6 @@ services:
     environment:
       - McpServerEndpoint=ws://mcpserver:5272/ws/register
       - ASPNETCORE_HTTP_PORTS=5173
-      # - URLS=http://0.0.0.0:5173
     depends_on:
       - mcpserver
       - orchestrator  
