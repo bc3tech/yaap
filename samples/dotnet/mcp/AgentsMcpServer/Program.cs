@@ -46,7 +46,7 @@ builder.Services.AddSingleton(subscriptions);
 WebApplication app = builder.Build();
 
 app.MapMcp();
-app.UseWebSockets();
+app.UseWebSockets(new WebSocketOptions { AllowedOrigins = { "*" } });
 
 app.Map("/ws/register", async context =>
 {

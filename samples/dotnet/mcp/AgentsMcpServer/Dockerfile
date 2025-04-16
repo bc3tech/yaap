@@ -4,6 +4,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
+EXPOSE 5272
+
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -12,25 +14,22 @@ WORKDIR /src
 COPY ["Directory.Packages.props", "."]
 COPY ["Directory.Build.props", "."]
 COPY ["NuGet.config", "."]
-COPY ["Agents/WebSockets/Teams_WS/Teams_WS.csproj", "Agents/WebSockets/Teams_WS/"]
+COPY ["AgentsMcpServer/AgentsMcpServer.csproj", "AgentsMcpServer/"]
 COPY ["Agents/WebSockets/wsAgent.Core/wsAgent.Core.csproj", "Agents/WebSockets/wsAgent.Core/"]
 COPY ["ApiClient/ApiClient.csproj", "ApiClient/"]
 COPY ["Common/Common.csproj", "Common/"]
 COPY ["Assistants/Assistants.csproj", "Assistants/"]
 COPY ["Models/Models.csproj", "Models/"]
 COPY . .
-WORKDIR "/src/Agents/WebSockets/Teams_WS"
+WORKDIR "/src/AgentsMcpServer"
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Teams_WS.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false 
+RUN dotnet publish "./AgentsMcpServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false 
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-EXPOSE 5173
-
-ENTRYPOINT ["dotnet", "Teams_WS.dll"]
+ENTRYPOINT ["dotnet", "AgentsMcpServer.dll"]

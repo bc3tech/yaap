@@ -43,15 +43,15 @@ public abstract class Expert : IHostedService
         _log = sp.GetRequiredService<ILoggerFactory>().CreateLogger(this.Name);
 
         this.Description = _config[Constants.Configuration.Paths.AgentDescription];
-        var securePort = _config.GetRequiredSection("Kestrel").GetRequiredSection("Endpoints").GetSection("HTTPs")["Url"];
+        var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
         if (securePort is not null)
         {
-            this.CallbackPort = new Uri(securePort).Port;
+            this.CallbackPort = int.Parse(securePort);
             this.Secured = true;
         }
         else
         {
-            this.CallbackPort = new Uri(Throws.IfNullOrWhiteSpace(_config.GetRequiredSection("Kestrel").GetRequiredSection("Endpoints").GetRequiredSection("HTTP")["Url"])).Port;
+            this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
         }
 
         if (this.PerformsIntroduction)
@@ -64,6 +64,7 @@ public abstract class Expert : IHostedService
     public string? Description { get; protected init; }
     public int CallbackPort { get; protected init; }
     public bool Secured { get; protected init; }
+    public string Hostname { get; protected init; } = Environment.MachineName;
 
     public virtual async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -97,7 +98,7 @@ public abstract class Expert : IHostedService
         var message = JsonSerializer.Serialize(new
         {
             action = "Introduce",
-            detail = new { this.Name, this.Description, this.CallbackPort, this.Secured }
+            detail = new { this.Name, this.Description, this.Hostname, this.CallbackPort, this.Secured }
         });
         await SendMessageAsync(_webSocket!, message, cancellationToken).ConfigureAwait(false);
     }

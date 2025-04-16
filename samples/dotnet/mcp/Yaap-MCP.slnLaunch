@@ -23,5 +23,29 @@
         "DebugTarget": "TBAStatReader_WS"
       }
     ]
+  },
+  {
+    "Name": "MCP demo (docker)",
+    "Projects": [
+      {
+        "Path": "AgentsMcpServer\\AgentsMcpServer.csproj",
+        "Action": "Start",
+        "DebugTarget": "Container (Dockerfile)"
+      },
+      {
+        "Path": "Agents\\WebSockets\\Orchestrator_WS\\Orchestrator_WS.csproj",
+        "Action": "Start",
+        "DebugTarget": "Container (Dockerfile)"
+      },
+      {
+        "Path": "Agents\\WebSockets\\Teams_WS\\Teams_WS.csproj",
+        "Action": "Start",
+        "DebugTarget": "Container (Dockerfile)"
+      },
+      {
+        "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
+        "Action": "Start"
+      }
+    ]
   }
 ]

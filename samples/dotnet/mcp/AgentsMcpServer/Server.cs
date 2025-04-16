@@ -56,13 +56,13 @@ internal class Server(IServiceProvider sp) : Expert(sp)
 
         var agentClient = new ClientWebSocket();
         UriBuilder b = new UriBuilder(request.GetProperty("Secured").GetBoolean() ? "wss" : "ws",
-            Throws.IfNullOrWhiteSpace(_contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString()),
+            Throws.IfNullOrWhiteSpace(request.GetProperty("Hostname").GetString()),
             request.GetProperty("CallbackPort").GetInt16(),
             "/ws/agent");
         await agentClient.ConnectAsync(b.Uri, cancellationToken);
 
         _expertConnections[name] = agentClient;
-        _expertIPAddresses[_contextAccessor.HttpContext.Connection.RemoteIpAddress] = name;
+        _expertIPAddresses[request.GetProperty("Hostname").GetString()] = name;
 
         var description = request.GetProperty("Description").GetString();
         var mcpTool = McpServerTool.Create(AIFunctionFactory.Create(async (string action, ChatHistory prompt) =>

@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 	  <UserSecretsId>bd940e53-ff29-49b2-b15d-3328289c1aff</UserSecretsId>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <DockerfileContext>..\..\..</DockerfileContext>
+	  <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +26,7 @@
 		<PackageReference Include="JsonCons.JmesPath" />
 		<PackageReference Include="Azure.Identity" />
 		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
 	</ItemGroup>
 
   <ItemGroup>
