@@ -1,27 +1,21 @@
+name: yaap-grpc
 services:
-  hub:
-    image: signalrhub
-    ports:
-      - "7126:8080"
   orchestrator:
     image: orchestrator
-    depends_on:
-      - hub
-  districtsagent:
-    image: districtsagent
-    depends_on:
-      - orchestrator
-  eventsagent:
-    image: eventsagent
-    depends_on:
-      - orchestrator
-  matchesagent:
-    image: matchesagent
-    depends_on:
-      - orchestrator
+    ports:
+      - "5173:5173"
+    networks:
+      - default
+
   teamsagent:
     image: teamsagent
     depends_on:
       - orchestrator
+    environment:
+    #   - ASPNETCORE_HTTP_PORTS=5000
+      - URLS=http://teamsagent:5000
+    networks:
+      - default
+
 networks:
   default:

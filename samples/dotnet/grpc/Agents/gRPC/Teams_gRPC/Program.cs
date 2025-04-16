@@ -8,6 +8,13 @@ IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
     .AddExpert<Agent>()
     .AddSemanticKernel<TeamApi>();
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddUserSecrets<Program>(optional: true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args);
+
 // Add services to the container.
 builder.Services.AddGrpc();
 
@@ -17,4 +24,4 @@ WebApplication app = ((WebApplicationBuilder)builder).Build();
 app.MapGrpcService<Agent>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
-app.Run();
+await app.RunAsync();

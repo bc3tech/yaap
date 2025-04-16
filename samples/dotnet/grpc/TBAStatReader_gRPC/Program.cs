@@ -44,7 +44,7 @@ internal partial class Program
 
         ILoggerFactory loggerFactory = b.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
-        b.Services.AddSingleton(sp => new OrchestratorClient(GrpcChannel.ForAddress(sp.GetRequiredService<IConfiguration>()[Constants.Configuration.VariableNames.SignalREndpoint]!)));
+        b.Services.AddSingleton(sp => new OrchestratorClient(GrpcChannel.ForAddress(sp.GetRequiredService<IConfiguration>()[Constants.Configuration.VariableNames.OrchestratorEndpoint]!)));
 
         await b.Build().RunAsync(cts.Token);
     }

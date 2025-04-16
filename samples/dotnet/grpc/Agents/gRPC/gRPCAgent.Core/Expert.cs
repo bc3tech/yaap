@@ -47,18 +47,21 @@ public abstract class Expert : Agent_gRPC.Agent.AgentBase, IHostedService
         {
             Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]),
             Description = appConfig[Constants.Configuration.Paths.AgentDescription] ?? string.Empty,
-            CallbackAddress = appConfig["URLS"]!.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)![0]
         };
 
         _log = Throws.IfNull(loggerFactory).CreateLogger(this.Detail.Name);
 
-        if (string.IsNullOrWhiteSpace(_config[Constants.Configuration.VariableNames.SignalREndpoint]))
+        if (this.PerformsIntroduction)
         {
-            _log.LogInformation("No SignalR endpoint configured. This agent will not be able to receive questions from the orchestrator.");
-        }
-        else
-        {
-            this.Client = new Orchestrator.OrchestratorClient(GrpcChannel.ForAddress(Throws.IfNullOrWhiteSpace(_config[Constants.Configuration.VariableNames.SignalREndpoint])));
+            this.Detail.CallbackAddress = Throws.IfNullOrWhiteSpace(appConfig["URLS"])!.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)![0];
+            if (string.IsNullOrWhiteSpace(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint]))
+            {
+                _log.LogInformation("No SignalR endpoint configured. This agent will not be able to receive questions from the orchestrator.");
+            }
+            else
+            {
+                this.Client = new Orchestrator.OrchestratorClient(GrpcChannel.ForAddress(Throws.IfNullOrWhiteSpace(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint])));
+            }
         }
     }
 
@@ -231,7 +234,10 @@ public abstract class Expert : Agent_gRPC.Agent.AgentBase, IHostedService
 
     public virtual async Task StopAsync(CancellationToken cancellationToken)
     {
-        _log.SayingGoodbyeToOrchestrator();
-        await this.Client.GoodbyeAsync(this.Detail, new CallOptions(cancellationToken: cancellationToken));
+        if (this.PerformsIntroduction)
+        {
+            _log.SayingGoodbyeToOrchestrator();
+            await this.Client.GoodbyeAsync(this.Detail, new CallOptions(cancellationToken: cancellationToken));
+        }
     }
 }

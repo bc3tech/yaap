@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 	  <UserSecretsId>8a28af41-0d59-41c5-add6-a20234790e22</UserSecretsId>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <DockerfileContext>..\..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +25,7 @@
 		<PackageReference Include="JsonCons.JmesPath" />
 		<PackageReference Include="Azure.Identity" />
 		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\gRPCAgent.Core\gRPCAgent.Core.csproj" />
