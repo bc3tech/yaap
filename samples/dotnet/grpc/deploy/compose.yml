@@ -4,18 +4,13 @@ services:
     image: orchestrator
     ports:
       - "5173:5173"
-    networks:
-      - default
 
   teamsagent:
     image: teamsagent
+    environment:
+      - URLS=http://teamsagent:5000
     depends_on:
       - orchestrator
-    environment:
-    #   - ASPNETCORE_HTTP_PORTS=5000
-      - URLS=http://teamsagent:5000
-    networks:
-      - default
 
 networks:
   default:

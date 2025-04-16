@@ -1,6 +1,6 @@
 [
   {
-    "Name": "gRPC demo",
+    "Name": "gRPC sample",
     "Projects": [
       {
         "Path": "Agents\\gRPC\\Orchestrator_gRPC\\Orchestrator_gRPC.csproj",

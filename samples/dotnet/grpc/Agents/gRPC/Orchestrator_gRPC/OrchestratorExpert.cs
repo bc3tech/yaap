@@ -34,5 +34,4 @@ public class OrchestratorExpert(IConfiguration configuration, ILoggerFactory log
             new () { Description = "Prompt response as a JSON object or array to be inferred upon.", ParameterType = typeof(string) })]
         );
     }
-
 }
