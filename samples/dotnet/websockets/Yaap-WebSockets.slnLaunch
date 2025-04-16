@@ -1,6 +1,6 @@
 [
   {
-    "Name": "Websockets Demo",
+    "Name": "Websockets sample",
     "Projects": [
       {
         "Path": "Agents\\WebSockets\\Orchestrator_WS\\Orchestrator_WS.csproj",

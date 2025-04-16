@@ -45,12 +45,24 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
         _log.AddingExpertNameToPanel(name);
         _log.LogDebug("{0}", request);
 
-        var agentClient = new ClientWebSocket();
+        ClientWebSocket? agentClient = null;
         UriBuilder b = new UriBuilder(request.GetProperty("Secured").GetBoolean() ? "wss" : "ws",
-            Throws.IfNullOrWhiteSpace(_contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString()),
+            Throws.IfNullOrWhiteSpace(request.GetProperty("Hostname").GetString()),
             request.GetProperty("CallbackPort").GetInt16(),
             "/ws/agent");
-        await agentClient.ConnectAsync(b.Uri, cancellationToken);
+        do
+        {
+            try
+            {
+                agentClient = new ClientWebSocket();
+                await agentClient.ConnectAsync(b.Uri, cancellationToken);
+            }
+            catch (WebSocketException e)
+            {
+                _log.LogError(e.Message);
+                await Task.Delay(1000);
+            }
+        } while (agentClient?.State is not WebSocketState.Open);
 
         _experts.AddOrUpdate(name, agentClient, (_, _) => agentClient);
 

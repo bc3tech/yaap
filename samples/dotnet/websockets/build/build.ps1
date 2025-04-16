@@ -36,7 +36,7 @@ if (-not $NoDocker) {
     Start-Job -Name "Image Teams Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-ws-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg SignalREndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-ws-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=ws://orchestrator:7292/ws/orchestrator --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
     } -ArgumentList (GetSecretObject '5631e549-948c-4903-be18-a06152c3600c'), $outputDir
     
     Get-Job | Wait-Job 

@@ -46,7 +46,7 @@ public static class HostExtensions
 
         if (!string.Equals("orchestrator", agentName, StringComparison.OrdinalIgnoreCase))
         {
-            Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.SignalREndpoint]);
+            Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
         }
     }
 

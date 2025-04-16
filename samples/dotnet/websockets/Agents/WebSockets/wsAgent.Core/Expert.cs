@@ -39,7 +39,7 @@ public abstract class Expert : IHostedService
 
         this.Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]);
         this.Description = appConfig[Constants.Configuration.Paths.AgentDescription];
-        var securePort = appConfig.GetRequiredSection("Kestrel").GetRequiredSection("Endpoints").GetSection("HTTPs")["Url"];
+        var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
         if (securePort is not null)
         {
             this.CallbackPort = new Uri(securePort).Port;
@@ -47,7 +47,7 @@ public abstract class Expert : IHostedService
         }
         else
         {
-            this.CallbackPort = new Uri(Throws.IfNullOrWhiteSpace(appConfig.GetRequiredSection("Kestrel").GetRequiredSection("Endpoints").GetRequiredSection("HTTP")["Url"])).Port;
+            this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
         }
 
         _log = Throws.IfNull(loggerFactory).CreateLogger(this.Name);
@@ -62,6 +62,7 @@ public abstract class Expert : IHostedService
     public string? Description { get; protected init; }
     public int CallbackPort { get; protected init; }
     public bool Secured { get; protected init; }
+    public string Hostname { get; protected init; } = Environment.MachineName;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -69,7 +70,7 @@ public abstract class Expert : IHostedService
 
         if (this.PerformsIntroduction && _webSocket is not null)
         {
-            var uri = new Uri(_config[Constants.Configuration.VariableNames.SignalREndpoint]);
+            var uri = new Uri(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
             await _webSocket.ConnectAsync(uri, cancellationToken).ConfigureAwait(false);
             await IntroduceAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -95,7 +96,7 @@ public abstract class Expert : IHostedService
         var message = JsonSerializer.Serialize(new
         {
             action = "Introduce",
-            detail = new { this.Name, this.Description, this.CallbackPort, this.Secured }
+            detail = new { this.Name, this.Description, this.Hostname, this.CallbackPort, this.Secured }
         });
         await SendMessageAsync(message, cancellationToken).ConfigureAwait(false);
     }

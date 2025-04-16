@@ -19,7 +19,7 @@ public static class Constants
 
             public const string Description = nameof(Description);
 
-            public const string SignalREndpoint = nameof(SignalREndpoint);
+            public const string OrchestratorEndpoint = nameof(OrchestratorEndpoint);
 
             public const string AzureOpenAIEndpoint = nameof(AzureOpenAIEndpoint);
 

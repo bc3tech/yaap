@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration) : IHostedService
 {
     private readonly ILogger _log = loggerFactory.CreateLogger<Worker>();
-    private readonly string _signalrEndpoint = Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.SignalREndpoint]);
+    private readonly string _OrchestratorEndpoint = Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
 
     internal static bool WaitingForResponse = false;
 
@@ -41,7 +41,7 @@ internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration
 
         var client = new ClientWebSocket();
         // Connect the WebSocket to the endpoint
-        await client.ConnectAsync(new Uri(_signalrEndpoint), cancellationToken);
+        await client.ConnectAsync(new Uri(_OrchestratorEndpoint), cancellationToken);
 
         do
         {

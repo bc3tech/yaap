@@ -9,8 +9,8 @@ ENV AzureOpenAIKey=$AZURE_OPENAI_KEY
 ARG TBA_API_KEY
 ENV TBA_API_KEY=$TBA_API_KEY
 
-ARG SignalREndpoint
-ENV SignalREndpoint=$SignalREndpoint
+ARG OrchestratorEndpoint
+ENV OrchestratorEndpoint=$OrchestratorEndpoint
 
 WORKDIR /app
 
