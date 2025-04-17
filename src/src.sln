@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36015.10 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Server", "Server\Yaap.Server.csproj", "{9D514749-514A-4D39-B9F7-47450318130B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Client", "Client\Yaap.Client.csproj", "{E4D9372D-E794-48F1-9F96-13008FDB4725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Models", "Models\Yaap.Models.csproj", "{6522849E-7C87-454C-8B16-EE7522F0585D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D514749-514A-4D39-B9F7-47450318130B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D514749-514A-4D39-B9F7-47450318130B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4D9372D-E794-48F1-9F96-13008FDB4725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2D52AA44-0E0D-430F-8B13-A417EBC09C35}
+	EndGlobalSection
+EndGlobal
