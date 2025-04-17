@@ -23,20 +23,5 @@
         "DebugTarget": "TBAStatReader_WS"
       }
     ]
-  },
-  {
-    "Name": "MCP sample (docker)",
-    "Projects": [
-      {
-        "Path": "docker-compose.dcproj",
-        "Action": "Start",
-        "DebugTarget": "Docker Compose"
-      },
-      {
-        "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
-        "Action": "StartWithoutDebugging",
-        "DebugTarget": "TBAStatReader_WS"
-      }
-    ]
   }
 ]

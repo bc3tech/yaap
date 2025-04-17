@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
-		<UserSecretsId>437593f2-d0e9-48fd-aa60-508b004cbab8</UserSecretsId>
+		<UserSecretsId>ADBB2388-3A68-4DA1-9B41-211BAE7DC545</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
@@ -15,5 +15,10 @@
 		<Content Update="appsettings.Development.json">
 			<DependentUpon>appsettings.json</DependentUpon>
 		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Dockerfile">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

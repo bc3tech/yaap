@@ -33,4 +33,10 @@
     <ProjectReference Include="..\wsAgent.Core\wsAgent.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

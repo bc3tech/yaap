@@ -1,15 +1,27 @@
+name: yaap-mcp
 services:
-  mcp_server:
-    image: mcp_server
-    ports:
-      - "7126:8080"
+  mcpserver:
+    image: yaap-mcp-server
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5272
+
   orchestrator:
-    image: orchestrator
+    image: yaap-mcp-orchestrator
+    environment:
+      - McpServerEndpoint=http://mcpserver:5272/sse
+      - ASPNETCORE_HTTP_PORTS=5172
+    ports:
+      - "5172:5172"
     depends_on:
-      - hub
-  teamsagent:
-    image: teamsagent
+      - mcpserver
+
+  teams_agent:
+    image: yaap-mcp-teamsagent
+    environment:
+      - McpServerEndpoint=ws://mcpserver:5272/ws/register
+      - ASPNETCORE_HTTP_PORTS=5173
     depends_on:
       - orchestrator
+
 networks:
   default:
