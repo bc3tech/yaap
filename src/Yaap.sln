@@ -16,6 +16,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Client", "Client\Yaap.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Models", "Models\Yaap.Models.csproj", "{6522849E-7C87-454C-8B16-EE7522F0585D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+		tests\Directory.Packages.props = tests\Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.Client.Tests", "tests\Yaap.Client.Tests\Yaap.Client.Tests.csproj", "{09979BB7-7796-4AC2-98CA-6631F48366FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yaap.TestCommon", "tests\Yaap.TestCommon\Yaap.TestCommon.csproj", "{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +44,21 @@ Global
 		{6522849E-7C87-454C-8B16-EE7522F0585D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6522849E-7C87-454C-8B16-EE7522F0585D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09979BB7-7796-4AC2-98CA-6631F48366FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09979BB7-7796-4AC2-98CA-6631F48366FF} = {0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}
+		{AD2BC3FD-DE95-4B0C-AAEC-40112872CC6D} = {0590CC7C-C60E-4F8E-8B73-39E92FE0DAB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D52AA44-0E0D-430F-8B13-A417EBC09C35}
