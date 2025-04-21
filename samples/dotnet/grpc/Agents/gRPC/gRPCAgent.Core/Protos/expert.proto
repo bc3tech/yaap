@@ -4,11 +4,6 @@ option csharp_namespace = "Expert_gRPC";
 
 package expert;
 
-service Expert {
-	rpc GetAnswer (AnswerRequest) returns (AnswerResponse);
-    rpc GetAnswerStream(AnswerRequest) returns (stream StreamResponse);
-}
-
 message AnswerRequest {
 	string prompt = 1;
 }

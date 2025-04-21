@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 using TBAStatReader_gRPC;
 
-internal class Worker(ILoggerFactory loggerFactory, Orchestrator_gRPC.Orchestrator.OrchestratorClient signalr) : IHostedService
+internal class Worker(ILoggerFactory loggerFactory, Orchestrator_gRPC.Orchestrator.OrchestratorClient client) : IHostedService
 {
     private readonly ILogger _log = loggerFactory.CreateLogger<Worker>();
 
@@ -54,7 +54,7 @@ internal class Worker(ILoggerFactory loggerFactory, Orchestrator_gRPC.Orchestrat
             var t = Task.Run(() => runSpinnerAsync(combinedCancelToken.Token), combinedCancelToken.Token);
 
             WaitingForResponse = true;
-            AsyncServerStreamingCall<Expert_gRPC.StreamResponse> completionCall = signalr.GetAnswerStream(new Expert_gRPC.AnswerRequest { Prompt = question }, cancellationToken: cancellationToken);
+            AsyncServerStreamingCall<Expert_gRPC.StreamResponse> completionCall = client.GetAnswerStream(new Expert_gRPC.AnswerRequest { Prompt = question }, cancellationToken: cancellationToken);
             await foreach (var r in completionCall.ResponseStream.ReadAllAsync())
             {
                 if (WaitingForResponse)
