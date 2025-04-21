@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Common;
+using Common.Extensions;
 
 using Microsoft.SemanticKernel;
 
@@ -33,7 +34,7 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
                 return JsonSerializer.Serialize(new { message = "Agent introduced" });
 
             case "Goodbye":
-                await RemoveAgent(caller, jsonObject.GetProperty("detail"), cancellationToken);
+                RemoveAgent(jsonObject.GetProperty("detail"));
                 return string.Empty;
 
             // Add more cases for other actions
@@ -43,18 +44,17 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
         }
     }
 
-    private async Task RemoveAgent(WebSocket caller, JsonElement jsonElement, CancellationToken cancellationToken)
+    private void RemoveAgent(JsonElement jsonElement)
     {
-
+        using var scope = _log.CreateMethodScope();
         var name = Throws.IfNullOrWhiteSpace(jsonElement.GetProperty("Name").GetString());
+        _log.LogTrace("Removing expert from panel {ExpertName}...", name);
         _log.LogDebug("{0}", jsonElement);
         if (_experts.TryRemove(name, out ClientWebSocket? webSocket))
         {
             var p = _kernel.Plugins.First(i => i.Name == name);
             _kernel.Plugins.Remove(p);
-
-            await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Agent removed", cancellationToken);
-            webSocket.Dispose();
+            _log.LogInformation("Expert {ExpertName} removed.", name);
         }
         else
         {
@@ -64,6 +64,7 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
 
     private async Task AddAgentAsync(WebSocket webSocket, JsonElement request, CancellationToken cancellationToken)
     {
+        using var scope = _log.CreateMethodScope();
         var name = Throws.IfNullOrWhiteSpace(request.GetProperty("Name").GetString());
         _log.AddingExpertNameToPanel(name);
         _log.LogDebug("{0}", request);
@@ -111,10 +112,18 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
         var messageBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
         await webSocket.SendAsync(new ArraySegment<byte>(messageBytes), WebSocketMessageType.Text, true, cancellationToken);
 
+        var fullResponse = new List<byte>();
         var buffer = new byte[1024 * 4];
-        WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
-        var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        while (!cancellationToken.IsCancellationRequested && webSocket.State is WebSocketState.Open)
+        {
+            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
+            fullResponse.AddRange([.. buffer[..result.Count]]);
+            if (result.EndOfMessage)
+            {
+                break;
+            }
+        }
 
-        return response;
+        return Encoding.UTF8.GetString([.. fullResponse]);
     }
 }

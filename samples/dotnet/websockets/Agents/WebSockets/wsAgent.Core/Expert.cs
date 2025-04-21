@@ -71,7 +71,7 @@ public abstract class Expert : IHostedService
 
         if (this.PerformsIntroduction && _webSocket is not null)
         {
-            var uri = new Uri(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
+            var uri = new Uri(_config[Constants.Configuration.VariableNames.OrchestratorEndpoint]!);
             await _webSocket.ConnectAsync(uri, cancellationToken).ConfigureAwait(false);
             await IntroduceAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -152,8 +152,6 @@ public abstract class Expert : IHostedService
                 {
                     await caller.SendAsync(token.ToByteArray(), WebSocketMessageType.Text, false, cancellationToken).ConfigureAwait(false);
                 }
-
-                await caller.SendAsync(Encoding.UTF8.GetBytes(string.Empty), WebSocketMessageType.Text, true, cancellationToken);
             }
             catch (Exception ex)
             {
