@@ -14,12 +14,12 @@
       },
       {
         "Path": "Agents\\WebSockets\\Teams_WS\\Teams_WS.csproj",
-        "Action": "Start",
+        "Action": "StartWithoutDebugging",
         "DebugTarget": "Teams_WS"
       },
       {
         "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
-        "Action": "Start",
+        "Action": "StartWithoutDebugging",
         "DebugTarget": "TBAStatReader_WS"
       }
     ]
