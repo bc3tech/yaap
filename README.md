@@ -8,7 +8,7 @@ This gives the user experience of evolving knowledge as the chat is made smarter
 
 ## Inspiration & Evolution
 
-- Could Experts (aka Agents) be added to an LLM conversation like how a chat room?
+- Could Experts (aka Agents) be added to an LLM conversation like a chat room?
 - Started with a SignalR implementation, loosely based on [the SignalR Chat Room sample](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-quickstart-dotnet-core)
 - Evolved into gRPC, then WebSockets, finally Model Context Protocol (MCP)
 
@@ -35,31 +35,36 @@ In YAAP, however, there is a sequence prepended and included in the context of t
 ```mermaid
 sequenceDiagram
     actor User
-    participant Expert
     participant Orchestrator
+    actor Expert
+    actor Expert
     participant LLM
 
-rect lightyellow
-loop
-    note right of Expert: Introduction sequence
-    Expert->>Orchestrator: /hello Expert details (name, description)
+rect rgba(100,100,100,.3)
+    note over Orchestrator, Expert: Introduction sequence
+    Expert->>Orchestrator: /hello (Expert details [name, description])
     Orchestrator->>Orchestrator: Update tools
-    Orchestrator-->>Expert: ACK
+    Orchestrator--)Expert: ACK
 end
-end
-    User->>Orchestrator: Chat completion request
-    Orchestrator->>LLM: User prompt + tools (experts)
-rect lightyellow
+    User->>Orchestrator: prompt
+    Orchestrator->>LLM: prompt + tools (experts)
+rect rgba(100,100,100,.3)
 loop
-    note right of Expert: Completion Loop
+    note over Orchestrator, LLM: [Optional] Completion Loop
     LLM-->>Orchestrator: Tool request
-    Orchestrator-->>Expert: LLM request
-    Expert-->>Orchestrator: Answer
-    Orchestrator-->>LLM: Expert answer
+    Orchestrator-->>Expert: prompt
+    Expert-->>Orchestrator: completion
+    Orchestrator-->>LLM: Expert completion
 end
 end
-    LLM->>Orchestrator: Completion
-    Orchestrator->>User: Completion
+    LLM->>Orchestrator: completion
+    Orchestrator->>User: completion
+rect rgba(100,100,100,.3)
+    note over Orchestrator, Expert: Goodbye sequence
+    Expert->>Orchestrator: /goodbye(Expert name)
+    Orchestrator->>Orchestrator: Update tools
+    Orchestrator--)Expert: ACK
+end
 ```
 
 When each Expert comes online, it must Introduce itself to the Orchestrator. This is done by sending a message to the Orchestrator, which includes the Expert's name and description. The Orchestrator then updates its list of tools (experts) and sends an ACK back to the Expert.
