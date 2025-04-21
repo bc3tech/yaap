@@ -4,6 +4,8 @@ using System.Collections.Concurrent;
 
 using Agent_gRPC;
 
+using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Net.Client;
 
 using gRPCAgent.Core;
@@ -33,5 +35,14 @@ public class OrchestratorExpert(IConfiguration configuration, ILoggerFactory log
             [new ("prompt") { IsRequired = true, ParameterType = typeof(string) }],
             new () { Description = "Prompt response as a JSON object or array to be inferred upon.", ParameterType = typeof(string) })]
         );
+    }
+
+    internal Task<Empty> RemoveAgent(AgentDetail request, Grpc.Core.ServerCallContext context)
+    {
+        _log.LogDebug("{0}", request);
+        _experts.TryRemove(request.Name, out var _);
+        var p = _kernel.Plugins.First(p => p.Name == request.Name);
+        _kernel.Plugins.Remove(p);
+        return Task.FromResult(new Empty());
     }
 }
