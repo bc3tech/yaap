@@ -21,7 +21,7 @@ if (-not $NoBuild) {
 }
 
 if (-not $NoDocker) {
-    docker rmi -f orchestrator teamsagent > $null
+    docker rmi -f yaap-grpc-orchestrator yaap-grpc-teamsagent > $null
 
     Write-Output "Building Docker images..."
 
