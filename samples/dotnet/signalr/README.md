@@ -18,7 +18,7 @@ rect rgba(100,100,100,.3)
     Note over U,E: Hello/Startup   
     O->>H: /connect
     U->>H: /connect
-    E->>H: /connect (name)
+    E->>H: /connect (name, description)
     H->>S: expertJoined
     S--)U: expertJoined
     S--)O: 
