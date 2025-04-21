@@ -1,5 +1,6 @@
 ﻿namespace wsAgent.Core;
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.WebSockets;
 using System.Text;
@@ -80,12 +81,20 @@ public abstract class Expert : IHostedService
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (_webSocket != null && _webSocket.State == WebSocketState.Open)
-        {
-            await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken).ConfigureAwait(false);
-        }
-
         _log.SayingGoodbyeToOrchestrator();
+
+        if (_webSocket?.State is WebSocketState.Open)
+        {
+            var message = JsonSerializer.Serialize(new
+            {
+                action = "Goodbye",
+                detail = new { this.Name, this.Description, this.Hostname, this.CallbackPort, this.Secured }
+            });
+            await SendMessageAsync(message, CancellationToken.None).ConfigureAwait(false);
+            await _webSocket.ReceiveAsync(ClientWebSocket.CreateServerBuffer(1024), CancellationToken.None).ConfigureAwait(false);
+
+            await _webSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken).ConfigureAwait(false);
+        }
     }
 
     protected virtual bool PerformsIntroduction { get; } = true;

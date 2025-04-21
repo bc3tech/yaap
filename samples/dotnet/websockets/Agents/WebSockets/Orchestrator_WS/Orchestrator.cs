@@ -32,10 +32,33 @@ internal class Orchestrator(IConfiguration configuration, ILoggerFactory loggerF
                 await AddAgentAsync(caller, jsonObject.GetProperty("detail"), cancellationToken);
                 return JsonSerializer.Serialize(new { message = "Agent introduced" });
 
+            case "Goodbye":
+                await RemoveAgent(caller, jsonObject.GetProperty("detail"), cancellationToken);
+                return string.Empty;
+
             // Add more cases for other actions
 
             default:
                 return await base.ProcessMessageAsync(caller, message, cancellationToken);
+        }
+    }
+
+    private async Task RemoveAgent(WebSocket caller, JsonElement jsonElement, CancellationToken cancellationToken)
+    {
+
+        var name = Throws.IfNullOrWhiteSpace(jsonElement.GetProperty("Name").GetString());
+        _log.LogDebug("{0}", jsonElement);
+        if (_experts.TryRemove(name, out ClientWebSocket? webSocket))
+        {
+            var p = _kernel.Plugins.First(i => i.Name == name);
+            _kernel.Plugins.Remove(p);
+
+            await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Agent removed", cancellationToken);
+            webSocket.Dispose();
+        }
+        else
+        {
+            _log.LogWarning("No agent found with the name {0}", name);
         }
     }
 

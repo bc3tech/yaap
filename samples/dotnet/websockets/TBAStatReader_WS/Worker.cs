@@ -68,7 +68,7 @@ internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration
 
             // Receive and print streaming responses
             var buffer = new byte[4];
-            while (client.State == WebSocketState.Open)
+            while (client.State is WebSocketState.Open)
             {
                 var result = await client.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 if (WaitingForResponse)
@@ -78,12 +78,12 @@ internal class Worker(ILoggerFactory loggerFactory, IConfiguration configuration
                     Console.CursorLeft = 0;
                 }
 
-                if (result.MessageType == WebSocketMessageType.Close)
+                if (result.MessageType is WebSocketMessageType.Close)
                 {
                     await client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
                     Console.WriteLine("WebSocket connection closed.");
                 }
-                else if (result.MessageType == WebSocketMessageType.Text)
+                else if (result.MessageType is WebSocketMessageType.Text)
                 {
                     var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     Console.Write(response);
