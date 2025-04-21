@@ -14,24 +14,24 @@ spec:
     spec:
       containers:
         - name: hub
-          image: signalrhub
+          image: yaap-signalr-hub
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 7128
         - name: orchestrator
-          image: orchestrator
+          image: yaap-signalr-orchestrator
           imagePullPolicy: IfNotPresent
         - name: districtsagent
-          image: districtsagent
+          image: yaap-signalr-districtsagent
           imagePullPolicy: IfNotPresent
         - name: teamsagent
-          image: teamsagent
+          image: yaap-signalr-teamsagent
           imagePullPolicy: IfNotPresent
         - name: eventsagent
-          image: eventsagent
+          image: yaap-signalr-eventsagent
           imagePullPolicy: IfNotPresent
         - name: matchesagent
-          image: matchesagent
+          image: yaap-signalr-matchesagent
           imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
@@ -42,8 +42,8 @@ spec:
   selector:
     app: tba-multiagent
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 7128
+      targetPort: 7128
       protocol: TCP
 ---
 apiVersion: v1
@@ -55,6 +55,6 @@ spec:
   selector:
     app: tba-multiagent
   ports:
-    - port: 7128 # Port on the Service (external)
-      targetPort: 8080 # Port on the Pods (internal)
+    - port: 8080 # Port on the Service (external)
+      targetPort: 7128 # Port on the Pods (internal)
       protocol: TCP
