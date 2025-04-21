@@ -1,42 +1,34 @@
-﻿namespace TBAStatReader_WS;
+﻿using Common;
 
-using Common;
+using ConsoleApp;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-internal partial class Program
+var cts = new CancellationTokenSource();
+Console.CancelKeyPress += (_, e) =>
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Resilience", "EA0014:The async method doesn't support cancellation", Justification = "Not applicable")]
-    private static async Task Main(string[] args)
+    cts.Cancel();
+    e.Cancel = true;
+};
+
+cts.Token.Register(() => Console.WriteLine("Cancellation requested. Exiting..."));
+
+HostApplicationBuilder b = Host.CreateApplicationBuilder(args);
+b.Services.AddHostedService<Worker>()
+    .AddHttpClient()
+    .AddTransient<DebugHttpHandler>()
+    .AddLogging(lb =>
     {
-        var cts = new CancellationTokenSource();
-        Console.CancelKeyPress += (_, e) =>
+        lb.AddSimpleConsole(o =>
         {
-            cts.Cancel();
-            e.Cancel = true;
-        };
+            o.SingleLine = true;
+            o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+            o.IncludeScopes = true;
+        });
+    });
 
-        cts.Token.Register(() => Console.WriteLine("Cancellation requested. Exiting..."));
+ILoggerFactory loggerFactory = b.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
-        HostApplicationBuilder b = Host.CreateApplicationBuilder(args);
-        b.Services.AddHostedService<Worker>()
-            .AddHttpClient()
-            .AddTransient<DebugHttpHandler>()
-            .AddLogging(lb =>
-            {
-                lb.AddSimpleConsole(o =>
-                {
-                    o.SingleLine = true;
-                    o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-                    o.IncludeScopes = true;
-                });
-            });
-
-        ILoggerFactory loggerFactory = b.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
-
-        await b.Build().RunAsync(cts.Token);
-    }
-}
-
+await b.Build().RunAsync(cts.Token);

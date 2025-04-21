@@ -1,4 +1,4 @@
-﻿namespace TBAStatReader;
+﻿namespace ConsoleApp;
 
 using System;
 using System.Diagnostics;
@@ -11,6 +11,8 @@ using Common;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using TBAStatReader;
 
 internal class Worker(ILoggerFactory loggerFactory, HubConnection signalr) : IHostedService
 {

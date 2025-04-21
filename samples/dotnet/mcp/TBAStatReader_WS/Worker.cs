@@ -1,4 +1,4 @@
-﻿namespace TBAStatReader_WS;
+﻿namespace ConsoleApp;
 
 using System;
 using System.Diagnostics;

@@ -1,4 +1,4 @@
-﻿namespace TBAStatReader_WS;
+﻿namespace ConsoleApp;
 
 #pragma warning disable CS8019
 using System;

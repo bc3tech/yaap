@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsAgent.Core", "Agents\WebS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams_WS", "Agents\WebSockets\Teams_WS\Teams_WS.csproj", "{4A128828-32BF-439D-A10A-01F71BC9A6E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBAStatReader_WS", "TBAStatReader_WS\TBAStatReader_WS.csproj", "{9C5003BE-732F-43DA-AE3C-D6155D2436C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "TBAStatReader_WS\ConsoleApp.csproj", "{9C5003BE-732F-43DA-AE3C-D6155D2436C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

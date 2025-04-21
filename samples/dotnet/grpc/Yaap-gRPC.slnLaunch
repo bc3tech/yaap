@@ -13,9 +13,9 @@
         "DebugTarget": "Teams_gRPC"
       },
       {
-        "Path": "TBAStatReader_gRPC\\TBAStatReader_gRPC.csproj",
+        "Path": "TBAStatReader_gRPC\\ConsoleApp.csproj",
         "Action": "Start",
-        "DebugTarget": "TBAStatReader_gRPC"
+        "DebugTarget": "ConsoleApp"
       }
     ]
   }

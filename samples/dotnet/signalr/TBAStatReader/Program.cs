@@ -2,14 +2,14 @@
 
 using Common;
 
+using ConsoleApp;
+
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Azure.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using TBAStatReader;
 
 internal partial class Program
 {

@@ -1,13 +1,13 @@
 ﻿using Common;
 
+using ConsoleApp;
+
 using Grpc.Net.Client;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using TBAStatReader;
 
 using static Orchestrator_gRPC.Orchestrator;
 

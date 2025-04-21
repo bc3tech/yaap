@@ -13,9 +13,9 @@
         "DebugTarget": "Teams_WS"
       },
       {
-        "Path": "TBAStatReader_WS\\TBAStatReader_WS.csproj",
+        "Path": "TBAStatReader_WS\\ConsoleApp.csproj",
         "Action": "Start",
-        "DebugTarget": "TBAStatReader_WS"
+        "DebugTarget": "ConsoleApp"
       }
     ]
   }

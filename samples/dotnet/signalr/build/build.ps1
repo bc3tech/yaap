@@ -13,7 +13,7 @@ if (-not $NoBuild) {
     Write-Output "Building projects..."
 
     Start-Job -Name "Build SignalRHub" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\SignalRHub\SignalRHub.csproj $outDir\signalrhub $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-    Start-Job -Name "Build TBAStatReader" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\TBAStatReader\TBAStatReader.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build ConsoleApp" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\TBAStatReader\ConsoleApp.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
     Start-Job -Name "Build Orchestrator" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\SignalR\Orchestrator_SignalR\Orchestrator_SignalR.csproj $outDir\orchestrator $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
 
     Start-Job -Name "Build Districts_SignalR" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\SignalR\Districts_SignalR\Districts_SignalR.csproj $outDir\districtsagent $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters

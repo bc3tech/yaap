@@ -1,6 +1,6 @@
 [
   {
-    "Name": "SignalR Demo",
+    "Name": "SignalR sample",
     "Projects": [
       {
         "Path": "SignalRHub\\SignalRHub.csproj",
@@ -33,7 +33,7 @@
         "DebugTarget": "Districts_SignalR"
       },
       {
-        "Path": "TBAStatReader\\TBAStatReader.csproj",
+        "Path": "TBAStatReader\\ConsoleApp.csproj",
         "Action": "Start",
         "DebugTarget": "TBAStatReader"
       }

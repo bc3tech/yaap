@@ -1,4 +1,4 @@
-﻿namespace TBAStatReader;
+﻿namespace ConsoleApp;
 
 using System;
 using System.Diagnostics;
@@ -11,8 +11,6 @@ using Grpc.Core;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using TBAStatReader_gRPC;
 
 internal class Worker(ILoggerFactory loggerFactory, Orchestrator_gRPC.Orchestrator.OrchestratorClient client) : IHostedService
 {
