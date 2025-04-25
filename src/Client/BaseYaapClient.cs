@@ -14,7 +14,6 @@ using Yaap.Models;
 /// Represents an abstract base class for a Yaap client that implements the <see cref="IHostedLifecycleService"/> interface.
 /// Provides lifecycle methods and configuration for interacting with a Yaap server.
 /// </summary>
-/// <typeparam name="T">The type of the response or data handled by the client.</typeparam>
 public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
 {
     private readonly ILogger? _log;
@@ -157,6 +156,7 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     //     Dispose(disposing: false);
     // }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

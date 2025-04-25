@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Yaap.Server.A2A": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61339;http://localhost:61340"
+    }
+  }
+}

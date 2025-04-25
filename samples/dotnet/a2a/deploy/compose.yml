@@ -1,0 +1,18 @@
+name: yaap-ws
+services:
+  orchestrator:
+    image: ${DOCKER_REGISTRY-}yaap-ws-orchestrator
+    environment:
+      - ASPNETCORE_HTTP_PORTS=7292
+    ports:
+      - "7292:7292"
+
+  teamsagent:
+    image: ${DOCKER_REGISTRY-}yaap-ws-teamsagent
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5173
+    depends_on:
+      - orchestrator
+
+networks:
+  default:
