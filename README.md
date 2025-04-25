@@ -6,15 +6,6 @@ With YAAP, it is possible to add expertise to an existing system without needing
 
 This gives the user experience of evolving knowledge as the chat is made smarter & more useful over time as more experts are deployed.
 
-> Note: The majority of [samples](samples/) in this repo utilize YAAP *as a concept **only*** and have not yet been migrated to the [YAAP SDK](src/). Progress:
->
-> Sample | Migration Status
-> --- | ---
-> WebSockets | ✅
-> gRPC | ✅
-> MCP | ✅
-> ~~SignalR~~ | ❌
-
 ## Inspiration & Evolution
 
 - Could Experts (aka Agents) be added to an LLM conversation like a chat room?
