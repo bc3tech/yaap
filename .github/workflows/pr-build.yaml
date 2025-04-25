@@ -1,0 +1,24 @@
+name: PR Build Check
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "!**/*.md"
+      - "!**/CONTRIBUTING*"
+      - "!.github/**"
+
+jobs:
+  pr-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+
+      - name: Build & Run UTs
+        run: dotnet test src/Yaap.sln -c Release

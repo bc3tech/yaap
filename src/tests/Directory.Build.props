@@ -1,9 +1,10 @@
 <Project>
 	<Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Build.props, $(MSBuildThisFileDirectory)..))" />
 	<PropertyGroup>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
+		<IsPackable>False</IsPackable>
+		<IsTestProject>True</IsTestProject>
 
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<IncludeSymbols>False</IncludeSymbols>
 		<EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
