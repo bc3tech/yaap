@@ -1,26 +1,32 @@
-﻿namespace Agent.Core;
+﻿namespace wsAgent.Core;
 
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Common;
-using Common.Extensions;
+using A2A;
+using A2A.Models;
+using A2A.Server.Infrastructure;
+using A2A.Server.Infrastructure.Services;
 
-using Microsoft.AspNetCore.SignalR.Client;
+using Common;
+
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
-using Models.SignalR;
+using Yaap.Client;
 
-public abstract class Expert : IHostedService
+using Task = Task;
+
+public abstract class Expert : BaseYaapClient, IAgentRuntime
 {
-    protected HubConnection SignalR { get; private set; } = default!;
-
     protected readonly IConfiguration _config;
     protected readonly ILogger _log;
     protected readonly Kernel _kernel;
@@ -28,198 +34,125 @@ public abstract class Expert : IHostedService
     protected readonly IHttpClientFactory _httpFactory;
 
     protected Expert(
-        [NotNull] IConfiguration appConfig,
-        [NotNull] ILoggerFactory loggerFactory,
-        [NotNull] IHttpClientFactory httpClientFactory,
-        [NotNull] Kernel sk,
-        [NotNull] PromptExecutionSettings promptSettings)
+        IConfiguration appConfig,
+        ILoggerFactory loggerFactory,
+        IHttpClientFactory httpClientFactory,
+        AgentCard? agentCard,
+        Kernel sk,
+        PromptExecutionSettings promptSettings) : base(appConfig, agentCard, loggerFactory)
     {
-        _config = Throws.IfNull(appConfig);
-        _kernel = Throws.IfNull(sk);
-        _promptSettings = Throws.IfNull(promptSettings);
-        _httpFactory = Throws.IfNull(httpClientFactory);
+        _config = appConfig;
+        _kernel = sk;
+        _promptSettings = promptSettings;
+        _httpFactory = httpClientFactory;
 
-        this.Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]);
-        this.Description = appConfig[Constants.Configuration.Paths.AgentDescription];
+        //this.Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]);
+        //this.Description = appConfig[Constants.Configuration.Paths.AgentDescription];
+        //var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
+        //if (securePort is not null)
+        //{
+        //    this.CallbackPort = new Uri(securePort).Port;
+        //    this.Secured = true;
+        //}
+        //else
+        //{
+        //    this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
+        //}
 
-        _log = Throws.IfNull(loggerFactory).CreateLogger(this.Name);
+        _log = Throws.IfNull(loggerFactory).CreateLogger(this.Name ?? GetType().Name);
     }
 
-    public string Name { get; protected init; }
-    public string? Description { get; protected init; }
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public string Name => this.Detail.Name;
+    public string? Description => this.Detail.Description;
+    //public int CallbackPort { get; protected init; }
+    //public bool Secured { get; protected init; }
+    //public string Hostname { get; protected init; } = Environment.MachineName;
+
+    //public Task HandleWebSocketAsync(WebSocket webSocket, CancellationToken cancellationToken) => AIHelpers.HandleWebSocketAsync(webSocket, (socket, raw, prompt, ct) => AIHelpers.ProcessMessageAsync(socket, raw, prompt, _kernel, _promptSettings, ct, _log), cancellationToken);
+
+    public override Task StartingAsync(CancellationToken cancellationToken)
     {
         AgentDefinition.OutputRegisteredSkFunctions(_kernel, new LogTraceTextWriter(_log));
-
-        await ConnectToSignalRAsync(cancellationToken);
-
-#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        _kernel.FunctionInvocationFilters.Add(new DefaultFunctionInvocationFilter(_log, this.SignalR));
-#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        return Task.CompletedTask;
     }
 
-    protected virtual async Task AfterSignalRConnectedAsync()
+    protected ArraySegment<byte> Buffer { get; } = ClientWebSocket.CreateClientBuffer(8192, 8192);
+
+    protected ClientWebSocket YaapServerConnection { get; } = new();
+    public override async Task SayHelloAsync(CancellationToken cancellationToken)
     {
-        if (!bool.Parse(await this.SignalR.InvokeAsync<string>("Connect")))
+        try
         {
-            _log.LogError("Connection failed");
-        }
-
-        if (this.PerformsIntroduction)
-        {
-            await IntroduceAsync();
-            this.SignalR.On(Constants.SignalR.Functions.Reintroduce, IntroduceAsync);
-        }
-
-        this.SignalR.On<string, string>(Constants.SignalR.Functions.GetAnswer, GetAnswerAsync);
-
-        _log.LogInformation("Awaiting question...");
-    }
-
-    protected virtual bool PerformsIntroduction { get; } = true;
-
-    protected async Task IntroduceAsync()
-    {
-        _log.LogDebug("Introducing myself...");
-        await this.SignalR.SendAsync(Constants.SignalR.Functions.Introduce, this.Name, _config[Constants.Configuration.Paths.AgentDescription]);
-    }
-
-    private async Task ConnectToSignalRAsync(CancellationToken cancellationToken)
-    {
-        using IDisposable scope = _log.CreateMethodScope();
-        _log.LogDebug("Connecting to SignalR hub...");
-
-        ConnectionInfo? connInfo = default;
-        using (IDisposable? negotiationScope = _log.BeginScope("negotiation"))
-        {
-            var targetEndpoint = $@"{Throws.IfNullOrWhiteSpace(_config[Constants.Configuration.VariableNames.SignalREndpoint])}?userid={this.Name}";
-            HttpClient client = _httpFactory.CreateClient("negotiation");
-            HttpResponseMessage hubNegotiateResponse = new();
-            for (var i = 0; i < 10; i++)
+            await this.YaapServerConnection.ConnectAsync(this.YaapServerEndpoint, cancellationToken).ConfigureAwait(false);
+            var message = JsonSerializer.Serialize(new
             {
-                try
-                {
-                    hubNegotiateResponse = await client.PostAsync(targetEndpoint, null, cancellationToken);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    _log.LogDebug(e, $@"Negotiation failed");
-                    await Task.Delay(1000, cancellationToken).ConfigureAwait(false);
-                }
-            }
+                action = "Hello",
+                detail = this.Detail,
+            });
 
-            if (hubNegotiateResponse is null)
-            {
-                _log.LogCritical("Unable to connect to server {signalrHubEndpoint} - Exiting.", _config[Constants.Configuration.VariableNames.SignalREndpoint]);
-                return;
-            }
+            var messageBytes = Encoding.UTF8.GetBytes(message);
 
-            hubNegotiateResponse.EnsureSuccessStatusCode();
+            await this.YaapServerConnection.SendAsync(new ReadOnlyMemory<byte>(messageBytes), WebSocketMessageType.Text, true, cancellationToken).ConfigureAwait(false);
 
-            try
+            (var result, var bytes) = await AIHelpers.ReceiveResponseAsync(this.YaapServerConnection, this.Buffer, cancellationToken).ConfigureAwait(false);
+            var jsonValue = JsonSerializer.Deserialize<JsonElement>(Encoding.UTF8.GetString([.. bytes], 0, bytes.Length));
+            if (!jsonValue.TryGetProperty("message", out JsonElement messageElement) || messageElement.GetString() is not "Agent acknowledged")
             {
-                connInfo = await hubNegotiateResponse.Content.ReadFromJsonAsync<ConnectionInfo>(cancellationToken: cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _log.LogDebug(ex, "Error parsing negotiation response");
-                _log.LogCritical("Unable to connect to server {signalrHubEndpoint} - Exiting.", _config[Constants.Configuration.VariableNames.SignalREndpoint]);
-                return;
+                _log.BadAckForHelloFromYAAPServerAckPayload(jsonValue);
             }
         }
-
-        ArgumentNullException.ThrowIfNull(connInfo);
-
-        IHubConnectionBuilder builder = new HubConnectionBuilder()
-            .WithUrl(connInfo.Url, o => o.AccessTokenProvider = connInfo.GetAccessTokenAsync)
-            .ConfigureLogging(lb =>
-            {
-                lb.AddConfiguration(_config.GetSection("Logging"));
-                lb.AddSimpleConsole(o =>
-                {
-                    o.SingleLine = true;
-                    o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-                    o.IncludeScopes = true;
-                });
-            }).WithAutomaticReconnect()
-#if DEBUG
-            .WithServerTimeout(TimeSpan.FromMinutes(5))
-#endif
-            .WithStatefulReconnect();
-
-        this.SignalR = builder.Build();
-        await this.SignalR.StartAsync(cancellationToken);
-
-        await AfterSignalRConnectedAsync();
-    }
-
-    protected Task<string> GetAnswerAsync(string prompt)
-    {
-        using IDisposable scope = _log.CreateMethodScope();
-
-        return GetAnswerInternalAsync(prompt);
-    }
-
-    protected virtual Task<string> GetAnswerInternalAsync(string prompt)
-    {
-        return ExecuteWithThrottleHandlingAsync(async () =>
+        catch (Exception e)
         {
-            string response;
-            try
-            {
-                FunctionResult promptResult = await _kernel.InvokePromptAsync(prompt, new(_promptSettings));
-
-                _log.LogDebug("Prompt handled. Response: {promptResponse}", promptResult);
-
-                response = promptResult.ToString();
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "Error handling prompt: {prompt}", prompt);
-
-                response = JsonSerializer.Serialize(ex.Message);
-            }
-
-            return response;
-        });
+            _log.ErrorTryingToSayHelloToYAAPServerAtYaapServerEndpoint(e, this.YaapServerEndpoint);
+        }
     }
 
-    protected async Task<T> ExecuteWithThrottleHandlingAsync<T>(Func<Task<T>> operation, int maxRetries = 10)
+    protected override Task StartedInternalAsync(CancellationToken cancellationToken)
     {
-        Exception? lastException = null;
-        for (var i = 0; i < maxRetries; i++)
+        _log.AwaitingQuestion();
+        return Task.CompletedTask;
+    }
+
+    public override async Task SayGoodbyeAsync(CancellationToken cancellationToken)
+    {
+        var socketCt = new CancellationToken();
+        using var socket = new ClientWebSocket();
+        try
         {
-            try
+            await socket.ConnectAsync(this.YaapServerEndpoint, socketCt).ConfigureAwait(false);
+            var message = JsonSerializer.Serialize(new
             {
-                return await operation();
-            }
-            catch (HttpOperationException ex)
-            {
-                lastException = ex;
-                if (ex.StatusCode == System.Net.HttpStatusCode.TooManyRequests && ex.InnerException is Azure.RequestFailedException rex)
-                {
-                    Azure.Response? resp = rex.GetRawResponse();
-                    if (resp?.Headers.TryGetValue("Retry-After", out var waitTime) is true)
-                    {
-                        _log.LogWarning("Responses Throttled! Waiting {retryAfter} seconds to try again...", waitTime);
-                        await Task.Delay(TimeSpan.FromSeconds(int.Parse(waitTime))).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                action = "Goodbye",
+                detail = this.Detail,
+            });
+
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+
+            await this.YaapServerConnection.SendAsync(new ReadOnlyMemory<byte>(messageBytes), WebSocketMessageType.Text, true, cancellationToken).ConfigureAwait(false);
+            (var result, var bytes) = await AIHelpers.ReceiveResponseAsync(socket, this.Buffer, socketCt).ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            _log.ErrorTryingToSayGoodbyeToYAAPServerAtYaapServerEndpoint(e, this.YaapServerEndpoint);
+        }
+    }
+
+    public async IAsyncEnumerable<AgentResponseContent> ExecuteAsync(TaskRecord task, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        var message = task.Message.Parts?.OfType<TextPart>().LastOrDefault()?.Text;
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            yield break;
         }
 
-        _log.LogError(lastException!, "Max retries exceeded.");
-        throw lastException!;
+        JsonElement jsonObject = JsonDocument.Parse(message).RootElement;
+
+        var response = await AIHelpers.GetAnswerAsync(_kernel, _promptSettings, Throws.IfNullOrWhiteSpace(jsonObject.GetProperty("prompt").GetString()), cancellationToken, _log);
+        yield return new(new Artifact { Append = false, Parts = [new TextPart(response)] });
     }
 
-    public virtual Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task CancelAsync(string taskId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }
