@@ -6,10 +6,16 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+using A2A;
+using A2A.Client.Services;
+using A2A.Models;
+
 using Common;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
+
+using Task = Task;
 
 public static class AIHelpers
 {
@@ -126,6 +132,12 @@ public static class AIHelpers
     }
 
     public static Task SendMessageAsync(WebSocket webSocket, string message, CancellationToken cancellationToken) => webSocket.SendAsync(Encoding.UTF8.GetBytes(message), WebSocketMessageType.Text, true, cancellationToken);
+    public static async Task<string> SendMessageAsync(IA2AProtocolClient a2aclient, string message, CancellationToken cancellationToken)
+    {
+        var resp = await a2aclient.SendTaskAsync(new A2A.Requests.SendTaskRequest { Params = new() { Message = new A2A.Models.Message { Role = MessageRole.User, Parts = [new A2A.Models.TextPart(message)] } } }, cancellationToken).ConfigureAwait(false);
+
+        return resp.Result.Artifacts.Last().Parts.OfType<TextPart>().Last().Text;
+    }
 
     public static async Task<(WebSocketReceiveResult lastReceiveResult, ImmutableArray<byte> responseBytes)> ReceiveResponseAsync(WebSocket webSocket, ArraySegment<byte> buffer, CancellationToken cancellationToken)
     {
@@ -154,9 +166,9 @@ public static class AIHelpers
                 case "GetAnswer":
                     return await GetAnswerAsync(kernel, promptSettings, Throws.IfNullOrWhiteSpace(jsonObject.GetProperty("prompt").GetString()), cancellationToken, log).ConfigureAwait(false);
 
-                case "StreamAnswer":
-                    await GetAnswerStreamingAsync(caller, kernel, promptSettings, Throws.IfNullOrWhiteSpace(jsonObject.GetProperty("prompt").GetString()), cancellationToken, log).ConfigureAwait(false);
-                    return null;
+                //case "StreamAnswer":
+                //    await GetAnswerStreamingAsync(caller, kernel, promptSettings, Throws.IfNullOrWhiteSpace(jsonObject.GetProperty("prompt").GetString()), cancellationToken, log).ConfigureAwait(false);
+                //    return null;
 
                 default:
                     return JsonSerializer.Serialize(new { error = "Unknown action" });
@@ -165,27 +177,6 @@ public static class AIHelpers
 
         return null;
     }
-
-    private static Task GetAnswerStreamingAsync(WebSocket caller, Kernel kernel, PromptExecutionSettings promptSettings, string prompt, CancellationToken cancellationToken, ILogger? log = null) =>
-        ExecuteWithThrottleHandlingAsync(async () =>
-            {
-                string response;
-                try
-                {
-                    await foreach (StreamingKernelContent token in kernel.InvokePromptStreamingAsync(prompt, new(promptSettings), cancellationToken: cancellationToken))
-                    {
-                        await caller.SendAsync(token.ToByteArray(), WebSocketMessageType.Text, false, cancellationToken).ConfigureAwait(false);
-                    }
-
-                    await SendMessageAsync(caller, string.Empty, cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    log?.ErrorHandlingPromptPrompt(ex, prompt);
-
-                    response = JsonSerializer.Serialize(ex.Message);
-                }
-            }, cancellationToken, log: log);
 
     private static async Task<string> GetAnswerAsync(Kernel kernel, PromptExecutionSettings promptSettings, string prompt, CancellationToken cancellationToken, ILogger? log = null)
     {

@@ -4,13 +4,15 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
+using A2A.Models;
+
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
 using Yaap.Server;
 
-using YaapClientDetail = Models.YaapClientDetail;
+using Task = Task;
 
 /// <summary>
 /// Represents a server that integrates with the Semantic Kernel framework.
@@ -28,10 +30,10 @@ public abstract class YaapServer<THelloResponse>(Kernel kernel, IDistributedCach
     /// <param name="prompt">The prompt to be processed by the expert.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the expert's response.</returns>
-    protected abstract Task<string> CallExpertAsync(YaapClientDetail clientDetail, string prompt, CancellationToken cancellationToken);
+    protected abstract Task<string> CallExpertAsync(AgentCard clientDetail, string prompt, CancellationToken cancellationToken);
 
     /// <inheritdoc />
-    protected override Task<THelloResponse> HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    protected override Task<THelloResponse> HandleHelloCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         _log.AddingExpertNameToSemanticKernelPlugins(clientDetail.Name);
         _log.LogDebug(clientDetail.ToString());
@@ -47,7 +49,7 @@ public abstract class YaapServer<THelloResponse>(Kernel kernel, IDistributedCach
     }
 
     /// <inheritdoc />
-    protected override Task HandleGoodbyeCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    protected override Task HandleGoodbyeCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         if (!kernel.Plugins.TryGetPlugin(clientDetail.Name, out KernelPlugin? plugin) || plugin is null)
         {

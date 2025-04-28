@@ -26,7 +26,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\src\A2A\Yaap.Server.A2A\Yaap.A2A.Server.AspNetCore.csproj" />
     <ProjectReference Include="..\wsAgent.Core\wsAgent.Core.csproj" />
   </ItemGroup>
 

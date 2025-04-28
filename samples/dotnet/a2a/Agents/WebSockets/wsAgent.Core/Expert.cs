@@ -1,12 +1,18 @@
 ﻿namespace wsAgent.Core;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+
+using A2A;
+using A2A.Models;
+using A2A.Server.Infrastructure;
+using A2A.Server.Infrastructure.Services;
 
 using Common;
 
@@ -16,7 +22,9 @@ using Microsoft.SemanticKernel;
 
 using Yaap.Client;
 
-public abstract class Expert : BaseYaapClient
+using Task = Task;
+
+public abstract class Expert : BaseYaapClient, IAgentRuntime
 {
     protected readonly IConfiguration _config;
     protected readonly ILogger _log;
@@ -28,37 +36,38 @@ public abstract class Expert : BaseYaapClient
         IConfiguration appConfig,
         ILoggerFactory loggerFactory,
         IHttpClientFactory httpClientFactory,
+        AgentCard? agentCard,
         Kernel sk,
-        PromptExecutionSettings promptSettings) : base(appConfig, loggerFactory)
+        PromptExecutionSettings promptSettings) : base(appConfig, agentCard, loggerFactory)
     {
         _config = appConfig;
         _kernel = sk;
         _promptSettings = promptSettings;
         _httpFactory = httpClientFactory;
 
-        this.Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]);
-        this.Description = appConfig[Constants.Configuration.Paths.AgentDescription];
-        var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
-        if (securePort is not null)
-        {
-            this.CallbackPort = new Uri(securePort).Port;
-            this.Secured = true;
-        }
-        else
-        {
-            this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
-        }
+        //this.Name = Throws.IfNullOrWhiteSpace(appConfig[Constants.Configuration.Paths.AgentName]);
+        //this.Description = appConfig[Constants.Configuration.Paths.AgentDescription];
+        //var securePort = _config["ASPNETCORE_HTTPS_PORTS"];
+        //if (securePort is not null)
+        //{
+        //    this.CallbackPort = new Uri(securePort).Port;
+        //    this.Secured = true;
+        //}
+        //else
+        //{
+        //    this.CallbackPort = int.TryParse(_config["ASPNETCORE_HTTP_PORTS"], out var p) ? p : 80;
+        //}
 
-        _log = Throws.IfNull(loggerFactory).CreateLogger(this.Name);
+        _log = Throws.IfNull(loggerFactory).CreateLogger(this.Name ?? GetType().Name);
     }
 
-    public string Name { get; protected init; }
-    public string? Description { get; protected init; }
-    public int CallbackPort { get; protected init; }
-    public bool Secured { get; protected init; }
-    public string Hostname { get; protected init; } = Environment.MachineName;
+    public string Name => this.Detail.Name;
+    public string? Description => this.Detail.Description;
+    //public int CallbackPort { get; protected init; }
+    //public bool Secured { get; protected init; }
+    //public string Hostname { get; protected init; } = Environment.MachineName;
 
-    public Task HandleWebSocketAsync(WebSocket webSocket, CancellationToken cancellationToken) => AIHelpers.HandleWebSocketAsync(webSocket, (socket, raw, prompt, ct) => AIHelpers.ProcessMessageAsync(socket, raw, prompt, _kernel, _promptSettings, ct, _log), cancellationToken);
+    //public Task HandleWebSocketAsync(WebSocket webSocket, CancellationToken cancellationToken) => AIHelpers.HandleWebSocketAsync(webSocket, (socket, raw, prompt, ct) => AIHelpers.ProcessMessageAsync(socket, raw, prompt, _kernel, _promptSettings, ct, _log), cancellationToken);
 
     public override Task StartingAsync(CancellationToken cancellationToken)
     {
@@ -116,12 +125,24 @@ public abstract class Expert : BaseYaapClient
                 detail = this.Detail,
             });
 
-            await AIHelpers.SendMessageAsync(socket, message, socketCt).ConfigureAwait(false);
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+
+            await this.YaapServerConnection.SendAsync(new ReadOnlyMemory<byte>(messageBytes), WebSocketMessageType.Text, true, cancellationToken).ConfigureAwait(false);
             (var result, var bytes) = await AIHelpers.ReceiveResponseAsync(socket, this.Buffer, socketCt).ConfigureAwait(false);
         }
         catch (Exception e)
         {
             _log.ErrorTryingToSayGoodbyeToYAAPServerAtYaapServerEndpoint(e, this.YaapServerEndpoint);
         }
+    }
+
+    public IAsyncEnumerable<AgentResponseContent> ExecuteAsync(TaskRecord task, CancellationToken cancellationToken = default)
+    {
+        return new[] { new AgentResponseContent(new Message { Parts = [new TextPart { Text = "hi" }], Role = MessageRole.Agent }) }.ToAsyncEnumerable();
+    }
+
+    public Task CancelAsync(string taskId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -3,24 +3,30 @@ namespace Orchestrator_WS;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net.WebSockets;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
+using A2A.Client.Configuration;
+using A2A.Client.Transport.WebSocket.Services;
+using A2A.Models;
+
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 
 using wsAgent.Core;
 
-using Yaap.Models;
 using Yaap.Server;
+
+using Task = Task;
 
 internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettings, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
 {
     private readonly ILogger<Orchestrator> _log = loggerFactory.CreateLogger<Orchestrator>();
+    private readonly ILoggerFactory _logFactory = loggerFactory;
 
-    private static readonly ConcurrentDictionary<string, ClientWebSocket> _expertConnections = new();
+    private static readonly ConcurrentDictionary<string, A2AProtocolWebSocketClient> _expertConnections = new();
 
     internal Task HandleWebSocketAsync(WebSocket webSocket, CancellationToken cancellationToken) => AIHelpers.HandleWebSocketAsync(webSocket, ProcessMessageAsync, cancellationToken);
 
@@ -36,18 +42,13 @@ internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettin
                 switch (action)
                 {
                     case "Hello":
-                        YaapClientDetail clientDetail = jsonObject.GetProperty("detail").Deserialize<YaapClientDetail>()!;
-
-                        if (clientDetail.CallbackUrl is null)
-                        {
-                            throw new ArgumentNullException(nameof(clientDetail.CallbackUrl), "Callback URL is required");
-                        }
+                        AgentCard clientDetail = jsonObject.GetProperty("detail").Deserialize<AgentCard>()!;
 
                         await HandleHelloAsync(clientDetail!, cancellationToken).ConfigureAwait(false);
                         return JsonSerializer.Serialize(new { message = "Agent acknowledged" });
 
                     case "Goodbye":
-                        await HandleGoodbyeAsync(jsonObject.GetProperty("detail").Deserialize<YaapClientDetail>()!, cancellationToken).ConfigureAwait(false);
+                        await HandleGoodbyeAsync(jsonObject.GetProperty("detail").Deserialize<AgentCard>()!, cancellationToken).ConfigureAwait(false);
                         return JsonSerializer.Serialize(new { message = "Agent removed" });
 
                     // Add more cases for other actions
@@ -73,10 +74,11 @@ internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettin
 
     private readonly ArraySegment<byte> _buffer = new(new byte[1024 * 4]);
 
-    protected override async Task HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    protected override Task HandleHelloCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
-        var socket = _expertConnections.AddOrUpdate(clientDetail.Name, new ClientWebSocket(), (_, _) => new ClientWebSocket());
-        await socket.ConnectAsync(clientDetail.CallbackUrl!, cancellationToken).ConfigureAwait(false);
+        _log.LogDebug("Introduction received from Agent: {AgentDetail}", JsonSerializer.Serialize(clientDetail));
+        var client = new A2AProtocolWebSocketClient(_logFactory.CreateLogger<A2AProtocolWebSocketClient>(), Options.Create(new A2AProtocolClientOptions { Endpoint = clientDetail.Url }));
+        _expertConnections.AddOrUpdate(clientDetail.Name, client, (_, _) => client);
 
         _kernel.ImportPluginFromFunctions(clientDetail.Name, [
             _kernel.CreateFunctionFromMethod(
@@ -88,23 +90,25 @@ internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettin
                 [new ("prompt") { IsRequired = true, ParameterType = typeof(string) }],
                 new () { Description = "Prompt response as a JSON object or array to be inferred upon.", ParameterType = typeof(string) })
             ]);
+
+        return System.Threading.Tasks.Task.CompletedTask;
     }
 
-    private async Task<string> SendMessageAndGetResponseAsync(YaapClientDetail clientDetail, object message, CancellationToken cancellationToken)
+    private async Task<string> SendMessageAndGetResponseAsync(AgentCard clientDetail, object message, CancellationToken cancellationToken)
     {
         var webSocket = _expertConnections[clientDetail.Name];
         try
         {
-            await AIHelpers.SendMessageAsync(webSocket, JsonSerializer.Serialize(message), cancellationToken).ConfigureAwait(false);
+            return await AIHelpers.SendMessageAsync(webSocket, JsonSerializer.Serialize(message), cancellationToken).ConfigureAwait(false);
 
-            (var socketResponse, var bytes) = await AIHelpers.ReceiveResponseAsync(webSocket, _buffer, cancellationToken).ConfigureAwait(false);
-            if (socketResponse.CloseStatus is not null)
-            {
-                throw new WebSocketException($"WebSocket closed unexpectedly (Status: {socketResponse.CloseStatus.Value})");
-            }
+            //(var socketResponse, var bytes) = await AIHelpers.ReceiveResponseAsync(webSocket, _buffer, cancellationToken).ConfigureAwait(false);
+            //if (socketResponse.CloseStatus is not null)
+            //{
+            //    throw new WebSocketException($"WebSocket closed unexpectedly (Status: {socketResponse.CloseStatus.Value})");
+            //}
 
-            var response = Encoding.UTF8.GetString([.. bytes], 0, bytes.Length);
-            return response;
+            //var response = Encoding.UTF8.GetString([.. bytes], 0, bytes.Length);
+            //return response;
         }
         catch (Exception e) when (e is OperationCanceledException or WebSocketException)
         {
@@ -115,7 +119,7 @@ internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettin
         }
     }
 
-    protected override Task HandleGoodbyeCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    protected override Task HandleGoodbyeCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         if (!_kernel.Plugins.TryGetPlugin(clientDetail.Name, out KernelPlugin? plugin) || plugin is null)
         {

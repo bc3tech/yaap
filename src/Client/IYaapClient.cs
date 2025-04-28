@@ -2,9 +2,10 @@
 
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
-using Yaap.Models;
+using A2A.Models;
+
+using Task = Task;
 
 /// <summary>
 /// Defines the contract for a YAAP (Yet Another Awesome Protocol) client.
@@ -14,7 +15,7 @@ public interface IYaapClient : IAsyncDisposable, IDisposable
     /// <summary>
     /// Gets the details of the YAAP client.
     /// </summary>
-    YaapClientDetail Detail { get; }
+    AgentCard Detail { get; }
 
     /// <summary>
     /// Gets the endpoint URI of the YAAP server.

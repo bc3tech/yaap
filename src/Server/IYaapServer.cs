@@ -3,7 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using Yaap.Models;
+using A2A.Models;
+
+using Task = Task;
 
 /// <summary>
 /// Defines the contract for a Yaap server to handle client interactions and configure event handlers.
@@ -17,7 +19,7 @@ public interface IYaapServer
     /// <param name="clientDetail">Details of the Yaap client sending the notification.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    Task HandleGoodbyeAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken);
+    Task HandleGoodbyeAsync(AgentCard clientDetail, CancellationToken cancellationToken);
 
     /// <summary>
     /// Handles a "Hello" instruction from a Yaap client.
@@ -26,7 +28,7 @@ public interface IYaapServer
     /// <param name="clientDetail">Details of the Yaap client sending the instruction.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    Task HandleHelloAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken);
+    Task HandleHelloAsync(AgentCard clientDetail, CancellationToken cancellationToken);
 }
 
 /// <summary>
@@ -41,7 +43,7 @@ public interface IYaapServer<THelloResponse> where THelloResponse : notnull
     /// <param name="clientDetail">Details of the Yaap client sending the instruction.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    Task<THelloResponse> HandleHelloAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken);
+    Task<THelloResponse> HandleHelloAsync(AgentCard clientDetail, CancellationToken cancellationToken);
 
     /// <summary>
     /// Handles a "Goodbye" notification from a Yaap client.
@@ -50,5 +52,5 @@ public interface IYaapServer<THelloResponse> where THelloResponse : notnull
     /// <param name="clientDetail">Details of the Yaap client sending the notification.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    Task HandleGoodbyeAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken);
+    Task HandleGoodbyeAsync(AgentCard clientDetail, CancellationToken cancellationToken);
 }

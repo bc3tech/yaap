@@ -1,5 +1,9 @@
 ﻿namespace wsAgent.Core.Extensions;
 
+using A2A.Server;
+using A2A.Server.Infrastructure;
+using A2A.Server.Infrastructure.Services;
+
 using Assistants;
 
 using Azure.Identity;
@@ -17,12 +21,17 @@ using TBAAPI.V3Client.Client;
 
 public static class HostExtensions
 {
-    public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b) where T : notnull, Expert => b.AddExpert<T, IHostApplicationBuilder>();
-    public static R AddExpert<T, R>(this R b) where T : notnull, Expert where R : IHostApplicationBuilder
+    public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b, Uri a2aEndpoint) where T : notnull, Expert => b.AddExpert<T, IHostApplicationBuilder>(a2aEndpoint);
+    public static R AddExpert<T, R>(this R b, Uri a2aEndpoint) where T : notnull, Expert where R : IHostApplicationBuilder
     {
         ValidateConfigForExpert(b.Configuration);
+        if (a2aEndpoint.IsAbsoluteUri)
+        {
+            throw new ArgumentException("A2A endpoints must be relative");
+        }
 
         b.Services.AddSingleton<T>()
+            .AddSingleton<IAgentRuntime>(sp => sp.GetRequiredService<T>())
             .AddHostedService(sp => sp.GetRequiredService<T>())
             .AddHttpClient()
             .AddTransient<DebugHttpHandler>()
@@ -34,6 +43,28 @@ public static class HostExtensions
                     o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
                     o.IncludeScopes = true;
                 });
+            })
+            .AddA2AProtocolServer(b.Configuration[Constants.Configuration.Paths.AgentName]!, server =>
+            {
+                server.UseAgentRuntime(p => p.GetRequiredService<IAgentRuntime>())
+                    .WithLifetime(ServiceLifetime.Singleton)
+                    .SupportsStreaming()
+                    .UseDistributedCacheTaskRepository();
+            })
+            .AddA2AWellKnownAgent((sp, cardBuilder) =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                cardBuilder
+                    .WithName(config[Constants.Configuration.Paths.AgentName]!)
+                    .WithDescription(config[Constants.Configuration.Paths.AgentDescription]!)
+                    .WithVersion("0.1.0")
+                    .WithUrl(new Uri(config["Yaap:Client:CallbackUrl"]!))
+                    .WithProvider(pb =>
+                    {
+                        pb.WithOrganization("BC3 Technologies")
+                            .WithUrl(new("http://yaap.bc3.tech"));
+                    })
+                    .SupportsStreaming();
             });
 
         return b;

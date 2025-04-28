@@ -344,13 +344,10 @@ public record JSONRPCError(int Code, string Message, object? Data);
 /// <param name="Id">
 /// The unique identifier for the response, which can be an integer, string, or null.
 /// </param>
-/// <param name="Result">
-/// The result of the JSON-RPC call, which may be null.
-/// </param>
 /// <param name="Error">
 /// The error details, which can be a <see cref="JSONRPCError"/> object or null.
 /// </param>
-public record JSONRPCResponse(object Id, object? Result = default, JSONRPCError? Error = null) : JSONRPCResponse<object>(Id, Result, Error);
+public abstract record JSONRPCResponse(object Id, JSONRPCError? Error = null);
 
 /// <summary>
 /// Represents a standard JSON-RPC response.
@@ -365,7 +362,7 @@ public record JSONRPCResponse(object Id, object? Result = default, JSONRPCError?
 /// <param name="Error">
 /// The error details, which can be a <see cref="JSONRPCError"/> object or null.
 /// </param>
-public record JSONRPCResponse<TResult>(object Id, TResult? Result = default, JSONRPCError? Error = null)
+public record JSONRPCResponse<TResult>(object Id, TResult? Result = default, JSONRPCError? Error = null) : JSONRPCResponse(Id, Error)
 {
     /// <summary>
     /// The JSON-RPC version, which is always "2.0".

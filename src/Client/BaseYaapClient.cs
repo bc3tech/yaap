@@ -3,12 +3,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using A2A.Models;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Yaap.Common;
-using Yaap.Models;
+
+using Task = Task;
 
 /// <summary>
 /// Represents an abstract base class for a Yaap client that implements the <see cref="IHostedLifecycleService"/> interface.
@@ -23,19 +26,14 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     /// Initializes a new instance of the <see cref="BaseYaapClient"/> class.
     /// </summary>
     /// <param name="appConfig">The application configuration used to initialize the client.</param>
+    /// <param name="agentCard"></param>
     /// <param name="loggerFactory">The logger factory used to create loggers for the client. Optional.</param>
     /// <exception cref="ArgumentNullException">Thrown if required configuration values are null or empty.</exception>
-    protected BaseYaapClient(IConfiguration appConfig, ILoggerFactory? loggerFactory)
+    protected BaseYaapClient(IConfiguration appConfig, AgentCard? agentCard, ILoggerFactory? loggerFactory)
     {
         _config = appConfig;
 
-        this.Detail = new(
-            Throws.IfNullOrWhiteSpace(_config["Yaap:Client:Name"]),
-            Throws.IfNullOrWhiteSpace(_config["Yaap:Client:Description"]),
-            _config["Yaap:Client:CallbackUrl"] is string callbackUrl
-                ? new Uri(callbackUrl)
-                : null
-        );
+        this.Detail = agentCard!;
 
         this.YaapServerEndpoint = new(Throws.IfNullOrWhiteSpace(_config["Yaap:Server:Endpoint"]));
         _log = loggerFactory?.CreateLogger($"Yaap.Client.{this.Detail.Name}");
@@ -44,7 +42,7 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     /// <summary>
     /// Gets the details of the Yaap client, including its name, description, and callback URL.
     /// </summary>
-    public YaapClientDetail Detail { get; }
+    public AgentCard Detail { get; }
 
     /// <summary>
     /// Gets the endpoint URI of the Yaap server.

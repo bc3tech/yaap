@@ -1,5 +1,7 @@
 <Project>
   <ItemGroup>
+    <PackageVersion Include="a2a-net.Core" Version="0.4.1" />
+    <PackageVersion Include="a2a-net.Server" Version="0.4.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Routing" Version="2.3.0" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.EnumStrings" Version="8.0.0-rc.2.23510.2" />

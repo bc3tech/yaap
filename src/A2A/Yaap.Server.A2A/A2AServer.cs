@@ -29,15 +29,15 @@ public class A2AServer
         {
             JSONRPCRequest? body = await JsonSerializer.DeserializeAsync<JSONRPCRequest>(context.Request.Body);
 
-            object result = body switch
+            JSONRPCResponse result = body switch
             {
                 GetTaskRequest getTaskRequest => await _taskManager.OnGetTaskAsync(getTaskRequest, context.RequestAborted),
                 SendTaskRequest sendTaskRequest => await _taskManager.OnSendTaskAsync(sendTaskRequest, context.RequestAborted),
-                SendTaskStreamingRequest sendTaskStreamingRequest => _taskManager.OnSendTaskSubscribeAsync(sendTaskStreamingRequest, context.RequestAborted),
+                SendTaskStreamingRequest sendTaskStreamingRequest => await _taskManager.OnSendTaskSubscribeAsync(sendTaskStreamingRequest, context.RequestAborted),
                 CancelTaskRequest cancelTaskRequest => await _taskManager.OnCancelTaskAsync(cancelTaskRequest, context.RequestAborted),
                 SetTaskPushNotificationRequest setTaskPushNotificationRequest => await _taskManager.OnSetTaskPushNotificationAsync(setTaskPushNotificationRequest, context.RequestAborted),
                 GetTaskPushNotificationRequest getTaskPushNotificationRequest => await _taskManager.OnGetTaskPushNotificationAsync(getTaskPushNotificationRequest, context.RequestAborted),
-                TaskResubscriptionRequest taskResubscriptionRequest => _taskManager.OnResubscribeToTaskAsync(taskResubscriptionRequest, context.RequestAborted),
+                TaskResubscriptionRequest taskResubscriptionRequest => await _taskManager.OnResubscribeToTaskAsync(taskResubscriptionRequest, context.RequestAborted),
                 _ => throw new InvalidOperationException($"Unexpected request type: {body?.GetType()}")
             };
 

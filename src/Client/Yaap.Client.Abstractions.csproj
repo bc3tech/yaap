@@ -7,11 +7,8 @@
     <Compile Include="..\common\Throws.cs" Link="Throws.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="a2a-net.Server" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Models\Yaap.Core.csproj" />
   </ItemGroup>
 
 </Project>
