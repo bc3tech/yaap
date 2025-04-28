@@ -1,11 +1,12 @@
+using Agent.Core.Extensions;
+
 using Google.Protobuf.WellKnownTypes;
 
-using gRPCAgent.Core.Extensions;
+using Orchestrator;
+using Orchestrator.GrpcServices;
 
-using Orchestrator_gRPC;
-using Orchestrator_gRPC.GrpcServices;
-
-using Yaap.Server;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
     .AddSemanticKernel();
@@ -13,7 +14,7 @@ IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services
-    .AddSingleton<IYaapServer<Empty>, Orchestrator>()
+    .AddSingleton<IYaapServer<YaapClientDetail, Empty>, Worker>()
     .AddDistributedMemoryCache()
     .AddHttpContextAccessor()
     .AddControllers();

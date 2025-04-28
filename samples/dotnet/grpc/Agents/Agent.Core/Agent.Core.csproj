@@ -8,11 +8,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\..\..\src\Client\Yaap.Client.csproj" />
-		<ProjectReference Include="..\..\..\..\..\..\src\Models\Yaap.Models.csproj" />
-		<ProjectReference Include="..\..\..\ApiClient\ApiClient.csproj" />
-		<ProjectReference Include="..\..\..\Assistants\Assistants.csproj" />
-		<ProjectReference Include="..\..\..\Models\Models.csproj" />
+		<ProjectReference Include="..\..\..\..\..\src\Client\Yaap.Client.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..\..\src\Models\Yaap.Core.csproj" />
+		<ProjectReference Include="..\..\ApiClient\ApiClient.csproj" />
+		<ProjectReference Include="..\..\Assistants\Assistants.csproj" />
+		<ProjectReference Include="..\..\Models\Models.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

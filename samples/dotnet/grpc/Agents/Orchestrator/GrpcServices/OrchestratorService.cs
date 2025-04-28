@@ -1,4 +1,6 @@
-namespace Orchestrator_gRPC.GrpcServices;
+namespace Orchestrator.GrpcServices;
+
+using Agent.Core;
 
 using Google.Protobuf.WellKnownTypes;
 
@@ -6,15 +8,11 @@ using Grpc.Core;
 using Grpc.Models;
 using Grpc.Orchestrator;
 
-using gRPCAgent.Core;
-
 using Microsoft.SemanticKernel;
 
-using Orchestrator_gRPC;
+using Yaap.Server.Abstractions;
 
-using Yaap.Server;
-
-internal class OrchestratorService(IYaapServer<Empty> orchestrator, ILogger<OrchestratorService> _log, Kernel _kernel, PromptExecutionSettings _promptSettings) : Grpc.Orchestrator.Orchestrator.OrchestratorBase
+internal class OrchestratorService(IYaapServer<Yaap.Core.Models.YaapClientDetail, Empty> orchestrator, ILogger<OrchestratorService> _log, Kernel _kernel, PromptExecutionSettings _promptSettings) : Orchestrator.OrchestratorBase
 {
     public override Task<Empty> Hello(YaapClientDetail request, ServerCallContext context) => orchestrator.HandleHelloAsync(request, context.CancellationToken);
 

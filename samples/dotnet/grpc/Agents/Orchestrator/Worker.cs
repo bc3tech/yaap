@@ -1,4 +1,4 @@
-﻿namespace Orchestrator_gRPC;
+﻿namespace Orchestrator;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,9 +13,9 @@ using Microsoft.SemanticKernel;
 
 using Yaap.Server.SemanticKernel;
 
-using YaapClientDetail = Yaap.Models.YaapClientDetail;
+using YaapClientDetail = Yaap.Core.Models.YaapClientDetail;
 
-internal class Orchestrator(Kernel _kernel, ILogger<Orchestrator> _log, IDistributedCache cache, ILoggerFactory loggerFactory) : YaapServer<Empty>(_kernel, cache, loggerFactory)
+internal class Worker(Kernel _kernel, ILogger<Worker> _log, IDistributedCache cache, ILoggerFactory loggerFactory) : YaapServer<Empty>(_kernel, cache, loggerFactory)
 {
     protected override async Task<string> CallExpertAsync(YaapClientDetail clientDetail, string prompt, CancellationToken cancellationToken)
     {

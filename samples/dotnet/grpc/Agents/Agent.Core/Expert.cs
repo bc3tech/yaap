@@ -1,6 +1,5 @@
-﻿namespace gRPCAgent.Core;
+﻿namespace Agent.Core;
 
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,12 +13,12 @@ using Grpc.Orchestrator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
 using Microsoft.SemanticKernel;
 
-using Yaap.Client;
+using Yaap.Client.Abstractions;
+using Yaap.Core.Models;
 
-using YaapClientDetail = Yaap.Models.YaapClientDetail;
+using YaapClientDetail = Yaap.Core.Models.YaapClientDetail;
 
 public abstract class Expert : Grpc.Expert.Expert.ExpertBase, IYaapClient, IHostedService
 {

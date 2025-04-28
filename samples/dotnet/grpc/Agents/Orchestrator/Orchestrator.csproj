@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\src\SemanticKernel\Server\Yaap.Server.SemanticKernel.csproj" />
-    <ProjectReference Include="..\..\..\Common\Common.csproj" />
-    <ProjectReference Include="..\gRPCAgent.Core\gRPCAgent.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\SemanticKernel\Server\Yaap.Server.SemanticKernel.csproj" />
+    <ProjectReference Include="..\..\Common\Common.csproj" />
+    <ProjectReference Include="..\Agent.Core\Agent.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

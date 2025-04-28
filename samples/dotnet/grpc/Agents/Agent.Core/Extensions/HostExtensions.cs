@@ -1,12 +1,12 @@
-﻿namespace gRPCAgent.Core.Extensions;
+﻿namespace Agent.Core.Extensions;
+
+using Agent.Core;
 
 using Assistants;
 
 using Azure.Identity;
 
 using Common;
-
-using gRPCAgent.Core;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +19,7 @@ using TBAAPI.V3Client.Client;
 
 public static class HostExtensions
 {
-    public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b) where T : notnull, Expert => AddExpert<T, IHostApplicationBuilder>(b);
+    public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b) where T : notnull, Expert => b.AddExpert<T, IHostApplicationBuilder>();
     public static R AddExpert<T, R>(this R b) where T : notnull, Expert where R : IHostApplicationBuilder
     {
         ValidateConfigForExpert(b.Configuration);

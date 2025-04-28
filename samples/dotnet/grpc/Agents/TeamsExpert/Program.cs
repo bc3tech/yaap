@@ -1,13 +1,13 @@
-using Grpc.Orchestrator;
+using Agent.Core.Extensions;
 
-using gRPCAgent.Core.Extensions;
+using Grpc.Orchestrator;
 
 using TBAAPI.V3Client.Api;
 
-using Teams_gRPC;
+using TeamsExpert;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
-    .AddExpert<Agent>()
+    .AddExpert<Worker>()
     .AddSemanticKernel<TeamApi>();
 
 builder.Configuration
@@ -27,7 +27,7 @@ if (!string.IsNullOrWhiteSpace(builder.Configuration["Yaap:Server:Endpoint"]))
 WebApplication app = ((WebApplicationBuilder)builder).Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<Agent>();
+app.MapGrpcService<Worker>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 await app.RunAsync();

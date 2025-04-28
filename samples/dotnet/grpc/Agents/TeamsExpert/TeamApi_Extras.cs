@@ -52,13 +52,13 @@ internal partial class TeamApi
             }
 
             JsonElement eltToTransform = JsonSerializer.SerializeToElement(new { teams }, JsonSerialzationOptions.Default);
-            JsonDocument filteredTeams = JsonCons.JmesPath.JsonTransformer.Transform(eltToTransform, jmesPathExpression);
+            JsonDocument filteredTeams = JsonTransformer.Transform(eltToTransform, jmesPathExpression);
             this.Log?.LogTrace("JsonCons.JMESPath result: {jsonConsResult}", filteredTeams.RootElement.ToString());
 
             if (filteredTeams is not null)
             {
-                if ((filteredTeams.RootElement.ValueKind is JsonValueKind.Array && filteredTeams.RootElement.EnumerateArray().Any())
-                    || (filteredTeams.RootElement.ValueKind is JsonValueKind.Object && filteredTeams.RootElement.EnumerateObject().Any()))
+                if (filteredTeams.RootElement.ValueKind is JsonValueKind.Array && filteredTeams.RootElement.EnumerateArray().Any()
+                    || filteredTeams.RootElement.ValueKind is JsonValueKind.Object && filteredTeams.RootElement.EnumerateObject().Any())
                 {
                     results.Add(filteredTeams);
                 }
@@ -86,8 +86,8 @@ internal partial class TeamApi
 
         List<TeamSimple>? matches = await GetDistrictTeamsAsync(districtKey).ConfigureAwait(false);
 
-        JsonDocument filteredTeams = JsonCons.JmesPath.JsonTransformer.Transform(JsonSerializer.SerializeToElement(matches, JsonSerialzationOptions.Default), jmesPathExpression);
-        matches = JsonSerializer.Deserialize<List<TeamSimple>>(filteredTeams, JsonSerialzationOptions.Default) ?? [];
+        JsonDocument filteredTeams = JsonTransformer.Transform(JsonSerializer.SerializeToElement(matches, JsonSerialzationOptions.Default), jmesPathExpression);
+        matches = filteredTeams.Deserialize<List<TeamSimple>>(JsonSerialzationOptions.Default) ?? [];
 
         this.Log?.LogDebug("Resulting document: {searchResults}", JsonSerializer.Serialize(matches));
 

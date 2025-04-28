@@ -11,9 +11,9 @@ $outputDir = Join-Path $repoRoot 'o'
 
 if (-not $NoBuild) {
     Write-Output "Building projects..."
-    Start-Job -Name "Build ConsoleApp" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\TBAStatReader_gRPC\ConsoleApp.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-    Start-Job -Name "Build Orchestrator" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\gRPC\gRPC_Orchestrator\gRPC_Orchestrator.csproj $outDir\orchestrator $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-    Start-Job -Name "Build Teams_gRPC" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\gRPC\Teams_gRPC\Teams_gRPC.csproj $outDir\teamsagent $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build ConsoleApp" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\ConsoleApp\ConsoleApp.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build Orchestrator" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\Orchestrator\Orchestrator.csproj $outDir\orchestrator $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build Teams Expert" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\TeamsExpert\TeamsExpert.csproj $outDir\teamsagent $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
     
     Get-Job | Wait-Job #| Remove-Job
 
@@ -28,13 +28,13 @@ if (-not $NoDocker) {
     Start-Job -Name "Image Orchestrator" {
         param($secret, $outDir)
 
-        docker build -t yaap-grpc-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey)
+        docker build -t yaap-grpc-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg AZURE_OPENAI_ENDPOINT=$($secret.AzureOpenAIEndpoint)
     } -ArgumentList (GetSecretObject '1507d29c-61b1-4678-b23a-1562ed1a1abb'), $outputDir
 
     Start-Job -Name "Image Teams Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-grpc-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://orchestrator:5173 --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
+        docker build -t yaap-grpc-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://orchestrator:5173 --build-arg TBA_API_KEY=$($secret.TBA_API_KEY) --build-arg AZURE_OPENAI_ENDPOINT=$($secret.AzureOpenAIEndpoint)
     } -ArgumentList (GetSecretObject '5631e549-948c-4903-be18-a06152c3600c'), $outputDir
     
     Get-Job | Wait-Job 
