@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using A2A.Client.Configuration;
+using A2A.Client.Services;
 using A2A.Client.Transport.WebSocket.Services;
 using A2A.Models;
 
@@ -21,12 +22,12 @@ using Yaap.Server;
 
 using Task = Task;
 
-internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettings, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
+internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettings, IHttpClientFactory httpClientFactory, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
 {
     private readonly ILogger<Orchestrator> _log = loggerFactory.CreateLogger<Orchestrator>();
     private readonly ILoggerFactory _logFactory = loggerFactory;
 
-    private static readonly ConcurrentDictionary<string, A2AProtocolWebSocketClient> _expertConnections = new();
+    private static readonly ConcurrentDictionary<string, IA2AProtocolClient> _expertConnections = new();
 
     internal Task HandleWebSocketAsync(WebSocket webSocket, CancellationToken cancellationToken) => AIHelpers.HandleWebSocketAsync(webSocket, ProcessMessageAsync, cancellationToken);
 
@@ -77,7 +78,8 @@ internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettin
     protected override Task HandleHelloCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         _log.LogDebug("Introduction received from Agent: {AgentDetail}", JsonSerializer.Serialize(clientDetail));
-        var client = new A2AProtocolWebSocketClient(_logFactory.CreateLogger<A2AProtocolWebSocketClient>(), Options.Create(new A2AProtocolClientOptions { Endpoint = clientDetail.Url }));
+        //var client = new A2AProtocolWebSocketClient(_logFactory.CreateLogger<A2AProtocolWebSocketClient>(), Options.Create(new A2AProtocolClientOptions { Endpoint = clientDetail.Url }));
+        var client = new A2AProtocolHttpClient(Options.Create(new A2AProtocolClientOptions { Endpoint = clientDetail.Url }), httpClientFactory.CreateClient(clientDetail.Name));
         _expertConnections.AddOrUpdate(clientDetail.Name, client, (_, _) => client);
 
         _kernel.ImportPluginFromFunctions(clientDetail.Name, [

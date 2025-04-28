@@ -44,11 +44,12 @@ public static class HostExtensions
                     o.IncludeScopes = true;
                 });
             })
+            .AddDistributedMemoryCache()
             .AddA2AProtocolServer(b.Configuration[Constants.Configuration.Paths.AgentName]!, server =>
             {
-                server.UseAgentRuntime(p => p.GetRequiredService<IAgentRuntime>())
+                server.UseAgentRuntime<T>()
                     .WithLifetime(ServiceLifetime.Singleton)
-                    .SupportsStreaming()
+                    //.SupportsStreaming()
                     .UseDistributedCacheTaskRepository();
             })
             .AddA2AWellKnownAgent((sp, cardBuilder) =>
@@ -64,7 +65,8 @@ public static class HostExtensions
                         pb.WithOrganization("BC3 Technologies")
                             .WithUrl(new("http://yaap.bc3.tech"));
                     })
-                    .SupportsStreaming();
+                    //.SupportsStreaming()
+                    ;
             });
 
         return b;

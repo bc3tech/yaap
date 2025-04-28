@@ -18,12 +18,13 @@ builder.Services
 WebApplication app = ((WebApplicationBuilder)builder).Build();
 
 // Configure the HTTP request pipeline.
-app.UseWebSockets();
+//app.UseWebSockets();
 app.MapGet("/", () => "Communication with WebSocket endpoints must be made through a WebSocket client.");
 
 // Map WebSocket endpoints
 app.MapA2AWellKnownAgentEndpoint();
-app.MapA2AAgentWebSocketEndpoint("/a2a/{agent}");
+app.MapA2AAgentHttpEndpoint();
+//app.MapA2AAgentWebSocketEndpoint();
 //app.Map("/ws/agent", async context =>
 //{
 //    if (context.WebSockets.IsWebSocketRequest)

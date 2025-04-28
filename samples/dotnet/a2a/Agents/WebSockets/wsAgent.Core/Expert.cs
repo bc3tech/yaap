@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -136,9 +137,18 @@ public abstract class Expert : BaseYaapClient, IAgentRuntime
         }
     }
 
-    public IAsyncEnumerable<AgentResponseContent> ExecuteAsync(TaskRecord task, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<AgentResponseContent> ExecuteAsync(TaskRecord task, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        return new[] { new AgentResponseContent(new Message { Parts = [new TextPart { Text = "hi" }], Role = MessageRole.Agent }) }.ToAsyncEnumerable();
+        var message = task.Message.Parts?.OfType<TextPart>().LastOrDefault()?.Text;
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            yield break;
+        }
+
+        JsonElement jsonObject = JsonDocument.Parse(message).RootElement;
+
+        var response = await AIHelpers.GetAnswerAsync(_kernel, _promptSettings, Throws.IfNullOrWhiteSpace(jsonObject.GetProperty("prompt").GetString()), cancellationToken, _log);
+        yield return new(new Artifact { Append = false, Parts = [new TextPart(response)] });
     }
 
     public Task CancelAsync(string taskId, CancellationToken cancellationToken = default)

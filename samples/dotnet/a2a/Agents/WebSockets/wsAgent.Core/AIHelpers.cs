@@ -135,8 +135,7 @@ public static class AIHelpers
     public static async Task<string> SendMessageAsync(IA2AProtocolClient a2aclient, string message, CancellationToken cancellationToken)
     {
         var resp = await a2aclient.SendTaskAsync(new A2A.Requests.SendTaskRequest { Params = new() { Message = new A2A.Models.Message { Role = MessageRole.User, Parts = [new A2A.Models.TextPart(message)] } } }, cancellationToken).ConfigureAwait(false);
-
-        return resp.Result.Artifacts.Last().Parts.OfType<TextPart>().Last().Text;
+        return resp.Result!.Artifacts!.Last().Parts!.OfType<TextPart>().Last().Text;
     }
 
     public static async Task<(WebSocketReceiveResult lastReceiveResult, ImmutableArray<byte> responseBytes)> ReceiveResponseAsync(WebSocket webSocket, ArraySegment<byte> buffer, CancellationToken cancellationToken)
@@ -178,7 +177,7 @@ public static class AIHelpers
         return null;
     }
 
-    private static async Task<string> GetAnswerAsync(Kernel kernel, PromptExecutionSettings promptSettings, string prompt, CancellationToken cancellationToken, ILogger? log = null)
+    public static async Task<string> GetAnswerAsync(Kernel kernel, PromptExecutionSettings promptSettings, string prompt, CancellationToken cancellationToken, ILogger? log = null)
     {
         var completion = await ExecuteWithThrottleHandlingAsync(async () =>
         {
@@ -200,6 +199,6 @@ public static class AIHelpers
 
             return response;
         }, cancellationToken, log: log).ConfigureAwait(false);
-        return JsonSerializer.Serialize(new { completion });
+        return completion;
     }
 }

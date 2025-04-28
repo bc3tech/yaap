@@ -1,6 +1,7 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="a2a-net.Client.Abstractions" Version="0.4.1" />
+    <PackageVersion Include="a2a-net.Client.Http" Version="0.4.1" />
     <PackageVersion Include="a2a-net.Client.WebSocket" Version="0.4.1" />
     <PackageVersion Include="a2a-net.Server.AspNetCore" Version="0.4.1" />
     <PackageVersion Include="a2a-net.Server.Infrastructure.DistributedCache" Version="0.4.1" />
