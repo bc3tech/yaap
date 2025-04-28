@@ -1,4 +1,4 @@
-﻿namespace Yaap.Server;
+﻿namespace Yaap.Server.Abstractions;
 
 using System.Text.Json;
 using System.Threading;
@@ -9,7 +9,9 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Task = System.Threading.Tasks.Task;
+using Yaap.Server;
+
+using Task = Task;
 
 /// <summary>
 /// Represents an abstract base class for a Yaap server that handles client Hellos and Goodbyes and notifications.

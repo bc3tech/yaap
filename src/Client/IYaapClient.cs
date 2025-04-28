@@ -1,4 +1,4 @@
-﻿namespace Yaap.Client;
+﻿namespace Yaap.Client.Abstractions;
 
 using System;
 using System.Threading;

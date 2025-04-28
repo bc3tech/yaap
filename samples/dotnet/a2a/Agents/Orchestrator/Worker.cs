@@ -1,4 +1,4 @@
-namespace Orchestrator_WS;
+namespace Orchestrator;
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -9,22 +9,23 @@ using System.Threading.Tasks;
 
 using A2A.Client.Configuration;
 using A2A.Client.Services;
-using A2A.Client.Transport.WebSocket.Services;
 using A2A.Models;
+
+using Agent.Core;
 
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 
-using wsAgent.Core;
+using Orchestrator_WS;
 
-using Yaap.Server;
+using Yaap.Server.Abstractions;
 
 using Task = Task;
 
-internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettings, IHttpClientFactory httpClientFactory, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
+internal class Worker(Kernel _kernel, PromptExecutionSettings promptSettings, IHttpClientFactory httpClientFactory, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
 {
-    private readonly ILogger<Orchestrator> _log = loggerFactory.CreateLogger<Orchestrator>();
+    private readonly ILogger<Worker> _log = loggerFactory.CreateLogger<Worker>();
     private readonly ILoggerFactory _logFactory = loggerFactory;
 
     private static readonly ConcurrentDictionary<string, IA2AProtocolClient> _expertConnections = new();

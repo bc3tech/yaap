@@ -10,7 +10,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
-using Yaap.Server;
+using Yaap.Server.Abstractions;
 
 using Task = Task;
 

@@ -9,8 +9,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\src\Server\Yaap.Server.Abstractions.csproj" />
-    <ProjectReference Include="..\wsAgent.Core\wsAgent.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Server\Yaap.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\Agent.Core\Agent.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">

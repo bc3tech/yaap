@@ -1,13 +1,13 @@
-using Orchestrator_WS;
+using Agent.Core.Extensions;
 
-using wsAgent.Core.Extensions;
+using Orchestrator;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
     .AddSemanticKernel();
 
 builder.Services
-    .AddSingleton<Orchestrator>()
-    .AddHostedService(sp => sp.GetRequiredService<Orchestrator>())
+    .AddSingleton<Worker>()
+    .AddHostedService(sp => sp.GetRequiredService<Worker>())
     .AddDistributedMemoryCache()
     .AddLogging(lb =>
     {
@@ -32,7 +32,7 @@ app.Map("/ws/orchestrator", async context =>
     if (context.WebSockets.IsWebSocketRequest)
     {
         System.Net.WebSockets.WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        Orchestrator orchestratorService = context.RequestServices.GetRequiredService<Orchestrator>();
+        Worker orchestratorService = context.RequestServices.GetRequiredService<Worker>();
         await orchestratorService.HandleWebSocketAsync(webSocket, context.RequestAborted);
     }
     else

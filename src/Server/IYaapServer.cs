@@ -1,4 +1,4 @@
-﻿namespace Yaap.Server;
+﻿namespace Yaap.Server.Abstractions;
 
 using System.Threading;
 using System.Threading.Tasks;

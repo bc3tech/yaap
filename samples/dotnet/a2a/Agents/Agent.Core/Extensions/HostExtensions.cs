@@ -1,8 +1,10 @@
-﻿namespace wsAgent.Core.Extensions;
+﻿namespace Agent.Core.Extensions;
 
 using A2A.Server;
 using A2A.Server.Infrastructure;
 using A2A.Server.Infrastructure.Services;
+
+using Agent.Core;
 
 using Assistants;
 
@@ -18,6 +20,8 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 using TBAAPI.V3Client.Client;
+
+using wsAgent.Core;
 
 public static class HostExtensions
 {

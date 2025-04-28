@@ -14,6 +14,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.10" />
     <PackageVersion Include="Microsoft.Azure.SignalR" Version="1.28.0" />
     <PackageVersion Include="Microsoft.Azure.SignalR.Management" Version="1.28.0" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
     <PackageVersion Include="Microsoft.Extensions.EnumStrings" Version="8.0.0-rc.2.23510.2" />
     <PackageVersion Include="Microsoft.Extensions.ExtraAnalyzers" Version="8.0.0-rc.2.23510.2" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />

@@ -1,4 +1,6 @@
-﻿namespace wsAgent.Core;
+﻿using wsAgent.Core;
+
+namespace Agent.Core;
 
 using System.Net.WebSockets;
 using System.Text;

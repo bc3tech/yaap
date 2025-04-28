@@ -1,4 +1,6 @@
-﻿namespace wsAgent.Core;
+﻿using wsAgent.Core;
+
+namespace Agent.Core;
 using System;
 using System.Collections.Immutable;
 using System.Net.WebSockets;
@@ -134,7 +136,7 @@ public static class AIHelpers
     public static Task SendMessageAsync(WebSocket webSocket, string message, CancellationToken cancellationToken) => webSocket.SendAsync(Encoding.UTF8.GetBytes(message), WebSocketMessageType.Text, true, cancellationToken);
     public static async Task<string> SendMessageAsync(IA2AProtocolClient a2aclient, string message, CancellationToken cancellationToken)
     {
-        var resp = await a2aclient.SendTaskAsync(new A2A.Requests.SendTaskRequest { Params = new() { Message = new A2A.Models.Message { Role = MessageRole.User, Parts = [new A2A.Models.TextPart(message)] } } }, cancellationToken).ConfigureAwait(false);
+        var resp = await a2aclient.SendTaskAsync(new A2A.Requests.SendTaskRequest { Params = new() { Message = new Message { Role = MessageRole.User, Parts = [new TextPart(message)] } } }, cancellationToken).ConfigureAwait(false);
         return resp.Result!.Artifacts!.Last().Parts!.OfType<TextPart>().Last().Text;
     }
 

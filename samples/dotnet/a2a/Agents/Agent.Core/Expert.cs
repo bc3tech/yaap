@@ -1,4 +1,6 @@
-﻿namespace wsAgent.Core;
+﻿using wsAgent.Core;
+
+namespace Agent.Core;
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
-using Yaap.Client;
+using Yaap.Client.Abstractions;
 
 using Task = Task;
 
@@ -76,7 +78,7 @@ public abstract class Expert : BaseYaapClient, IAgentRuntime
         return Task.CompletedTask;
     }
 
-    protected ArraySegment<byte> Buffer { get; } = ClientWebSocket.CreateClientBuffer(8192, 8192);
+    protected ArraySegment<byte> Buffer { get; } = WebSocket.CreateClientBuffer(8192, 8192);
 
     protected ClientWebSocket YaapServerConnection { get; } = new();
     public override async Task SayHelloAsync(CancellationToken cancellationToken)

@@ -1,4 +1,4 @@
-﻿namespace Yaap.Client;
+﻿namespace Yaap.Client.Abstractions;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using Yaap.Client;
 using Yaap.Common;
 
 using Task = Task;

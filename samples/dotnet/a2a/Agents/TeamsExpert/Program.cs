@@ -1,13 +1,13 @@
 using A2A.Server.AspNetCore;
 
+using Agent.Core.Extensions;
+
 using TBAAPI.V3Client.Api;
 
-using Teams_WS;
-
-using wsAgent.Core.Extensions;
+using TeamsExpert;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
-    .AddExpert<Agent>(new("/a2a/TeamsExpert", UriKind.Relative))
+    .AddExpert<Worker>(new("/a2a/TeamsExpert", UriKind.Relative))
     .AddSemanticKernel<TeamApi>();
 
 // Add services to the container.
