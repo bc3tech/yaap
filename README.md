@@ -80,4 +80,4 @@ When each Expert comes online, it must Introduce itself to the Orchestrator. Thi
 
 When a User sends a chat completion request to the Orchestrator, the Orchestrator sends the User's prompt along with the list of tools (experts) to the LLM. The LLM then generates a response based on the User's prompt and the available tools.
 
-Explore the areas of this repo for example implementations of YAAP using different protocols.
+Explore the [samples](samples/README.md) area of this repo for example implementations of YAAP using different protocols.

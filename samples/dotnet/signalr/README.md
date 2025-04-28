@@ -1,11 +1,9 @@
+# YAAP via SignalR
+
+> **Note**: The SignalR sample is a standalone implementation of the YAAP protocol, and it is not yet integrated with the YAAP SDK. The SignalR sample is intended to demonstrate the basic functionality of the YAAP protocol, and it can be used as a reference for implementing other protocols in the future.
 
 ```mermaid
 
----
-config:
-  theme: redux-color
-  look: handDrawn
----
 sequenceDiagram
     actor U as User
     participant O as Orchestrator

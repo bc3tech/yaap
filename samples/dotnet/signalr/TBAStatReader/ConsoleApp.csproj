@@ -4,7 +4,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<UserSecretsId>ee74e0c7-2dad-4fa0-8c51-0fc55ad1f52c</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Extensions.cs" />

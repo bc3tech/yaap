@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
+	<PropertyGroup>
+		<Title>YAAP Server for Semantic Kernel</Title>
+	</PropertyGroup>
+	<ItemGroup>
     <PackageReference Include="Microsoft.SemanticKernel" />
   </ItemGroup>
   <ItemGroup>
