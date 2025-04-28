@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Agents\WebSockets\wsAgent.Core\wsAgent.Core.csproj" />
+    <ProjectReference Include="..\Agents\Agent.Core\Agent.Core.csproj" />
   </ItemGroup>
 
 </Project>

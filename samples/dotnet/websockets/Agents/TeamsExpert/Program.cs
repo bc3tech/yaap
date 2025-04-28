@@ -1,11 +1,11 @@
+using Agent.Core.Extensions;
+
 using TBAAPI.V3Client.Api;
 
-using Teams_WS;
-
-using wsAgent.Core.Extensions;
+using TeamsExpert;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
-    .AddExpert<Agent>()
+    .AddExpert<Worker>()
     .AddSemanticKernel<TeamApi>();
 
 // Add services to the container.
@@ -24,7 +24,7 @@ app.Map("/ws/agent", async context =>
     if (context.WebSockets.IsWebSocketRequest)
     {
         System.Net.WebSockets.WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        Agent agentService = context.RequestServices.GetRequiredService<Agent>();
+        Worker agentService = context.RequestServices.GetRequiredService<Worker>();
         await agentService.HandleWebSocketAsync(webSocket, context.RequestAborted);
     }
     else

@@ -1,4 +1,4 @@
-namespace Orchestrator_WS;
+namespace Orchestrator;
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -8,17 +8,19 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Agent.Core;
+
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.SemanticKernel;
 
-using wsAgent.Core;
+using Orchestrator_WS;
 
-using Yaap.Models;
-using Yaap.Server;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 
-internal class Orchestrator(Kernel _kernel, PromptExecutionSettings promptSettings, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
+internal class Worker(Kernel _kernel, PromptExecutionSettings promptSettings, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer(cache, loggerFactory)
 {
-    private readonly ILogger<Orchestrator> _log = loggerFactory.CreateLogger<Orchestrator>();
+    private readonly ILogger<Worker> _log = loggerFactory.CreateLogger<Worker>();
 
     private static readonly ConcurrentDictionary<string, ClientWebSocket> _expertConnections = new();
 

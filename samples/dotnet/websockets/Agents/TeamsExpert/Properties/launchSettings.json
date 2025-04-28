@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Teams_WS": {
+    "TeamsExpert": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

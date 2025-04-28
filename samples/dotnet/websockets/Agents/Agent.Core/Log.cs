@@ -1,4 +1,4 @@
-﻿namespace wsAgent.Core;
+﻿namespace Agent.Core;
 
 #pragma warning disable CS8019
 using System;
