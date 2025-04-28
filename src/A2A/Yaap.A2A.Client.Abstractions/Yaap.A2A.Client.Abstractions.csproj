@@ -1,12 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Title>YAAP Server</Title>
+		<Title>YAAP Agent-to-Agent (A2A) Client Abstractions</Title>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Include="..\..\common\Throws.cs" Link="Throws.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="a2a-net.Core" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Models\Yaap.Core.csproj" />
+		<ProjectReference Include="..\..\Client\Yaap.Client.Abstractions.csproj" />
 	</ItemGroup>
+
 </Project>

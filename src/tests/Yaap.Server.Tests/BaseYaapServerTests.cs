@@ -1,6 +1,5 @@
 namespace Yaap.Server.Tests;
 
-using System.Collections.Generic;
 using System.Threading.Channels;
 
 using Microsoft.Extensions.Caching.Distributed;
@@ -9,13 +8,13 @@ using Microsoft.Extensions.Hosting;
 
 using Xunit.Abstractions;
 
-using Yaap.Models;
-using Yaap.Server;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 using Yaap.TestCommon;
 
 public class BaseYaapServerTests(ITestOutputHelper outputHelper) : YaapTest(outputHelper)
 {
-    private sealed class TestYaapServer(IDistributedCache cache) : BaseYaapServer<string>(cache, null)
+    private sealed class TestYaapServer(IDistributedCache cache) : BaseYaapServer(cache, null)
     {
         public int HelloCalledCount { get; private set; }
         protected override Task<string> HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)

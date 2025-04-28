@@ -1,20 +1,23 @@
-﻿namespace Yaap.Server.Abstractions;
+﻿namespace Yaap.A2A.Server.Abstractions;
 
 using System.Text.Json;
 using System.Threading;
+
+using global::A2A.Models;
 
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Yaap.Core.Models;
-using Yaap.Server;
+using Yaap.Server.Abstractions;
+
+using Task = Task;
 
 /// <summary>
 /// Represents an abstract base class for a Yaap server that handles client Hellos and Goodbyes and notifications.
 /// Implements the <see cref="IHostedService"/> interface for server lifecycle management.
 /// </summary>
-public abstract class BaseYaapServer : IHostedService, IYaapServer
+public abstract class BaseYaapServer : IHostedService, IYaapServer<AgentCard>
 {
     private readonly ILogger? _log;
 
@@ -46,7 +49,7 @@ public abstract class BaseYaapServer : IHostedService, IYaapServer
     public virtual Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     /// <inheritdoc/>
-    public async Task HandleHelloAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    public async Task HandleHelloAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         if (this.ClientCache.GetString(clientDetail.Name) is not null)
         {
@@ -68,13 +71,13 @@ public abstract class BaseYaapServer : IHostedService, IYaapServer
     /// <param name="clientDetail">Details of the Yaap client sending the instruction.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    protected virtual Task HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
+    protected virtual Task HandleHelloCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
 
     /// <inheritdoc/>
     public virtual Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     /// <inheritdoc/>
-    public async Task HandleGoodbyeAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    public async Task HandleGoodbyeAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         _log?.RemovingClientYaapClientNameFromCache(clientDetail.Name);
         await this.ClientCache.RemoveAsync(clientDetail.Name, cancellationToken).ConfigureAwait(false);
@@ -90,14 +93,14 @@ public abstract class BaseYaapServer : IHostedService, IYaapServer
     /// <param name="clientDetail">Details of the Yaap client sending the notification.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    protected virtual Task HandleGoodbyeCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
+    protected virtual Task HandleGoodbyeCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
 }
 
 /// <summary>
 /// Represents an abstract base class for a Yaap server that handles client Hellos and Goodbyes and notifications.
 /// Implements the <see cref="IHostedService"/> interface for server lifecycle management.
 /// </summary>
-public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServer<YaapClientDetail, THelloResponse> where THelloResponse : notnull
+public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServer<AgentCard, THelloResponse> where THelloResponse : notnull
 {
     private readonly ILogger? _log;
 
@@ -129,7 +132,7 @@ public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServ
     public virtual Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     /// <inheritdoc/>
-    public async Task<THelloResponse> HandleHelloAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    public async Task<THelloResponse> HandleHelloAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         if (this.ClientCache.GetString(clientDetail.Name) is not null)
         {
@@ -151,13 +154,13 @@ public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServ
     /// <param name="clientDetail">Details of the Yaap client sending the instruction.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    protected abstract Task<THelloResponse> HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken);
+    protected abstract Task<THelloResponse> HandleHelloCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     public virtual Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     /// <inheritdoc/>
-    public async Task HandleGoodbyeAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
+    public async Task HandleGoodbyeAsync(AgentCard clientDetail, CancellationToken cancellationToken)
     {
         _log?.RemovingClientYaapClientNameFromCache(clientDetail.Name);
         await this.ClientCache.RemoveAsync(clientDetail.Name, cancellationToken).ConfigureAwait(false);
@@ -173,5 +176,5 @@ public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServ
     /// <param name="clientDetail">Details of the Yaap client sending the notification.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    protected virtual Task HandleGoodbyeCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
+    protected virtual Task HandleGoodbyeCustomAsync(AgentCard clientDetail, CancellationToken cancellationToken) => Task.CompletedTask;
 }

@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "A2A sample",
+    "Projects": [
+      {
+        "Path": "ConsoleApp\\ConsoleApp.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Agents\\Orchestrator\\Orchestrator.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Agents\\TeamsExpert\\TeamsExpert.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

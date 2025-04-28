@@ -2,7 +2,7 @@
 
 Google's A2A (Agent to Agent) is a concept where one agent can call another agent to perform tasks. This is useful when you want to delegate specific tasks to specialized agents.
 
-The primary add that A2A offers in YAAP is the `AgentCard` model. This model effectively replaces the `YaapClientDetail` construct. Since A2A is simply a JSON RPC schema, you can couple it with any number of transport layers.
+The primary add that A2A offers in YAAP is the `AgentCard` model. This model effectively replaces the `YaapClientDetail` construct. Since A2A is simply a JSON RPC schema, you can couple it with any number of transport layers. In fact, one way to start migrating from pure YAAP to A2A is to simply replace `YaapClientDetail` with `AgentCard`.
 
 However, unlike YAAP, A2A does not provide the concept of introduction. So, we merge the two ideas introduce the agent to the orchestrator by sending A2A's `AgentCard` and utilize `a2a-net`'s client construct to make calls back to the agent from within a Semantic Kernel function.
 

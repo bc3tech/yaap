@@ -2,8 +2,4 @@
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="a2a-net.Core" />
-	</ItemGroup>
 </Project>

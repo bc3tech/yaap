@@ -3,19 +3,23 @@
 using System;
 using System.Threading;
 
-using A2A.Models;
-
-using Task = Task;
+using Yaap.Core.Models;
 
 /// <summary>
 /// Defines the contract for a YAAP (Yet Another Awesome Protocol) client.
 /// </summary>
-public interface IYaapClient : IAsyncDisposable, IDisposable
+public interface IYaapClient : IYaapClient<YaapClientDetail>
+{
+}
+/// <summary>
+/// Defines the contract for a YAAP (Yet Another Awesome Protocol) client.
+/// </summary>
+public interface IYaapClient<TClientDetail> : IAsyncDisposable, IDisposable
 {
     /// <summary>
     /// Gets the details of the YAAP client.
     /// </summary>
-    AgentCard Detail { get; }
+    TClientDetail Detail { get; }
 
     /// <summary>
     /// Gets the endpoint URI of the YAAP server.

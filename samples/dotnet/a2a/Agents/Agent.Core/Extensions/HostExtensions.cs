@@ -21,8 +21,6 @@ using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 using TBAAPI.V3Client.Client;
 
-using wsAgent.Core;
-
 public static class HostExtensions
 {
     public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b, Uri a2aEndpoint) where T : notnull, Expert => b.AddExpert<T, IHostApplicationBuilder>(a2aEndpoint);

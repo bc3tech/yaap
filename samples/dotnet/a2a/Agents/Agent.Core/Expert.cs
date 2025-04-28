@@ -1,18 +1,12 @@
-﻿using wsAgent.Core;
-
-namespace Agent.Core;
-
+﻿namespace Agent.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 
-using A2A;
 using A2A.Models;
 using A2A.Server.Infrastructure;
 using A2A.Server.Infrastructure.Services;
@@ -23,7 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
-using Yaap.Client.Abstractions;
+using Yaap.A2A.Client.Abstractions;
+using Yaap.Core.Models;
 
 using Task = Task;
 

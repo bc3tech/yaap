@@ -1,4 +1,4 @@
-﻿namespace Orchestrator_WS;
+﻿namespace Orchestrator;
 
 #pragma warning disable CS8019
 using System;

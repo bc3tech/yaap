@@ -17,9 +17,8 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 
-using Orchestrator_WS;
-
-using Yaap.Server.Abstractions;
+using Yaap.A2A.Server.Abstractions;
+using Yaap.Core.Models;
 
 using Task = Task;
 

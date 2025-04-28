@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\..\src\Client\Yaap.Client.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..\..\src\A2A\Yaap.A2A.Client.Abstractions\Yaap.A2A.Client.Abstractions.csproj" />
 		<ProjectReference Include="..\..\ApiClient\ApiClient.csproj" />
 		<ProjectReference Include="..\..\Assistants\Assistants.csproj" />
 		<ProjectReference Include="..\..\Models\Models.csproj" />

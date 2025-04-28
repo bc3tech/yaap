@@ -1,15 +1,16 @@
-﻿namespace Yaap.Client.Abstractions;
+﻿namespace Yaap.A2A.Client.Abstractions;
 
 using System.Threading;
 using System.Threading.Tasks;
+
+using global::A2A.Models;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Yaap.Client;
+using Yaap.Client.Abstractions;
 using Yaap.Common;
-using Yaap.Core.Models;
 
 using Task = Task;
 
@@ -17,7 +18,7 @@ using Task = Task;
 /// Represents an abstract base class for a Yaap client that implements the <see cref="IHostedLifecycleService"/> interface.
 /// Provides lifecycle methods and configuration for interacting with a Yaap server.
 /// </summary>
-public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
+public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient<AgentCard>
 {
     private readonly ILogger? _log;
     private readonly IConfiguration _config;
@@ -29,7 +30,7 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     /// <param name="clientDetail"></param>
     /// <param name="loggerFactory">The logger factory used to create loggers for the client. Optional.</param>
     /// <exception cref="ArgumentNullException">Thrown if required configuration values are null or empty.</exception>
-    protected BaseYaapClient(IConfiguration appConfig, YaapClientDetail? clientDetail, ILoggerFactory? loggerFactory)
+    protected BaseYaapClient(IConfiguration appConfig, AgentCard? clientDetail, ILoggerFactory? loggerFactory)
     {
         _config = appConfig;
         Throws.IfNullOrWhiteSpace(clientDetail?.Name, "Yaap client name is required.");
@@ -44,7 +45,7 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     /// <summary>
     /// Gets the details of the Yaap client, including its name, description, and callback URL.
     /// </summary>
-    public YaapClientDetail Detail { get; }
+    public AgentCard Detail { get; }
 
     /// <summary>
     /// Gets the endpoint URI of the Yaap server.
