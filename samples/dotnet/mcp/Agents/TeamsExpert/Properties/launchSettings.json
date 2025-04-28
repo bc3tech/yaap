@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Teams_gRPC": {
+    "TeamsExpert": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

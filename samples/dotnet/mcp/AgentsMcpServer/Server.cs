@@ -21,8 +21,8 @@ using ModelContextProtocol;
 using ModelContextProtocol.Protocol.Messages;
 using ModelContextProtocol.Server;
 
-using Yaap.Models;
-using Yaap.Server;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 
 internal class Server(ConcurrentDictionary<string, HashSet<IMcpServer>> _subscriptions, IDistributedCache cache, ILoggerFactory loggerFactory) : BaseYaapServer<Empty>(cache, loggerFactory)
 {

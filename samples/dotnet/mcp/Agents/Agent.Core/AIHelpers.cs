@@ -1,4 +1,4 @@
-﻿namespace gRPCAgent.Core;
+﻿namespace Agent.Core;
 using System;
 using System.Collections.Immutable;
 using System.Net.WebSockets;

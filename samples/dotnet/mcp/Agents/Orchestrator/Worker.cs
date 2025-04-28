@@ -1,4 +1,4 @@
-﻿namespace Orchestrator_gRPC;
+﻿namespace Orchestrator;
 
 using System.Diagnostics;
 using System.Net;
@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
-using gRPCAgent.Core;
+using Agent.Core;
 
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.SemanticKernel;
@@ -18,7 +18,7 @@ using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol.Messages;
 using ModelContextProtocol.Protocol.Transport;
 
-internal class Orchestrator(IClientTransport mcpTransport, Kernel kernel, IDistributedCache _threads, ILoggerFactory _loggerFactory, IConfiguration appConfig, IHttpClientFactory httpClientFactory, PromptExecutionSettings executionSettings, IHttpContextAccessor _contextAccessor) : Expert(appConfig, _loggerFactory, httpClientFactory, kernel, executionSettings)
+internal class Worker(IClientTransport mcpTransport, Kernel kernel, IDistributedCache _threads, ILoggerFactory _loggerFactory, IConfiguration appConfig, IHttpClientFactory httpClientFactory, PromptExecutionSettings executionSettings, IHttpContextAccessor _contextAccessor) : Expert(appConfig, _loggerFactory, httpClientFactory, kernel, executionSettings)
 {
     private IMcpClient? _mcpClient;
 

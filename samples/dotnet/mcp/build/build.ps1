@@ -11,12 +11,11 @@ $outputDir = Join-Path $repoRoot 'o'
 
 if (-not $NoBuild) {
     Write-Output "Building projects..."
+    Start-Job -Name "Build ConsoleApp" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\ConsoleApp\ConsoleApp.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build Orchestrator" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\Orchestrator\Orchestrator.csproj $outDir\orchestrator $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
+    Start-Job -Name "Build Teams Expert" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\TeamsExpert\TeamsExpert.csproj $outDir\teamsagent $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
 
     Start-Job -Name "Build MCP Server" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\AgentsMcpServer\AgentsMcpServer.csproj $outDir\mcpserver $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-    Start-Job -Name "Build ConsoleApp" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\TBAStatReader_WS\ConsoleApp.csproj $outDir\client $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-    Start-Job -Name "Build Orchestrator" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\WebSockets\Orchestrator_WS\Orchestrator_WS.csproj $outDir\orchestrator $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
-
-    Start-Job -Name "Build Teams_SignalR" { param($repoRoot, $scriptRoot, $outDir, $params) . $scriptRoot\functions.ps1 ; RunBuild $repoRoot\Agents\WebSockets\Teams_WS\Teams_WS.csproj $outDir\teamsagent $params } -ArgumentList $repoRoot, $PSScriptRoot, $outputDir, $PSBoundParameters
 
     Get-Job | Wait-Job #| Remove-Job
 
@@ -37,14 +36,14 @@ if (-not $NoDocker) {
     Start-Job -Name "Image Orchestrator" {
         param($secret, $outDir)
 
-        docker build -t yaap-mcp-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://hub:8080/api/negotiate
-    } -ArgumentList (GetSecretObject '437593f2-d0e9-48fd-aa60-508b004cbab8'), $outputDir
+        docker build -t yaap-mcp-orchestrator $outDir\orchestrator --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg AZURE_OPENAI_ENDPOINT=$($secret.AzureOpenAIEndpoint)
+    } -ArgumentList (GetSecretObject '1507d29c-61b1-4678-b23a-1562ed1a1abb'), $outputDir
 
     Start-Job -Name "Image Teams Agent" {
         param($secret, $outDir)
 
-        docker build -t yaap-mcp-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg OrchestratorEndpoint=http://hub:8080/api/negotiate --build-arg TBA_API_KEY=$($secret.TBA_API_KEY)
-    } -ArgumentList (GetSecretObject 'bd940e53-ff29-49b2-b15d-3328289c1aff'), $outputDir
+        docker build -t yaap-mcp-teamsagent $outDir\teamsagent --build-arg AZURE_OPENAI_KEY=$($secret.AzureOpenAIKey) --build-arg TBA_API_KEY=$($secret.TBA_API_KEY) --build-arg AZURE_OPENAI_ENDPOINT=$($secret.AzureOpenAIEndpoint)
+    } -ArgumentList (GetSecretObject '5631e549-948c-4903-be18-a06152c3600c'), $outputDir
     
     Get-Job | Wait-Job 
 

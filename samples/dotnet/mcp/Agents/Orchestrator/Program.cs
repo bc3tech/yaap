@@ -1,14 +1,14 @@
-using Common;
+using Agent.Core.Extensions;
 
-using gRPCAgent.Core.Extensions;
+using Common;
 
 using ModelContextProtocol.Protocol.Transport;
 
-using Orchestrator_gRPC;
-using Orchestrator_gRPC.GrpcServices;
+using Orchestrator;
+using Orchestrator.GrpcServices;
 
 IHostApplicationBuilder builder = WebApplication.CreateBuilder(args)
-    .AddExpert<Orchestrator>()
+    .AddExpert<Worker>()
     .AddSemanticKernel();
 
 // Add services to the container.

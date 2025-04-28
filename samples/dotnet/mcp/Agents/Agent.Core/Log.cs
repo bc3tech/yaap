@@ -1,5 +1,4 @@
-﻿
-namespace gRPCAgent.Core;
+﻿namespace Agent.Core;
 
 using System;
 

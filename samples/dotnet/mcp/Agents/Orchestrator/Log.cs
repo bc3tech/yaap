@@ -1,7 +1,4 @@
-﻿namespace Orchestrator_gRPC;
-
-using System;
-
+﻿namespace Orchestrator;
 using Microsoft.Extensions.Logging;
 
 static partial class Log
@@ -23,7 +20,7 @@ static partial class Log
     internal static partial void AddingClientYaapClientNameToCache(this ILogger logger, string YaapClientName);
 
     [LoggerMessage(5, LogLevel.Debug, "Client added to cache {YaapClientDetail}")]
-    internal static partial void ClientAddedToCacheYaapClientDetail(this ILogger logger, Yaap.Models.YaapClientDetail YaapClientDetail);
+    internal static partial void ClientAddedToCacheYaapClientDetail(this ILogger logger, Yaap.Core.Models.YaapClientDetail YaapClientDetail);
 
     [LoggerMessage(6, LogLevel.Trace, "Removing Client {YaapClientName} from cache")]
     internal static partial void RemovingClientYaapClientNameFromCache(this ILogger logger, string YaapClientName);

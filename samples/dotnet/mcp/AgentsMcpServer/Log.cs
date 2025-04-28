@@ -1,10 +1,8 @@
 ﻿namespace AgentsMcpServer;
 
-using Grpc.Models;
-
 using Microsoft.Extensions.Logging;
 
-using Yaap.Models;
+using Yaap.Core.Models;
 
 static partial class Log
 {
