@@ -16,11 +16,13 @@ using Xunit;
 using Xunit.Abstractions;
 
 using Yaap.Client;
+using Yaap.Client.Abstractions;
+using Yaap.Core.Models;
 using Yaap.TestCommon;
 
 public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHelper)
 {
-    private sealed class TestYaapClient(IConfiguration appconfig) : BaseYaapClient(appconfig, null)
+    private sealed class TestYaapClient(IConfiguration appconfig, YaapClientDetail clientDetail) : BaseYaapClient(appconfig, clientDetail, null)
     {
         public int HelloCalledCount { get; private set; }
         public override Task SayHelloAsync(CancellationToken cancellationToken)
@@ -47,6 +49,7 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+        this.Mocker.Use(new YaapClientDetail("TestClient", "TestDescription", new("http://localhost/callback")));
         this.Mocker.Use(configurationMock);
 
         // Act
@@ -70,6 +73,7 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+        this.Mocker.Use(new YaapClientDetail(null, "TestDescription", new("http://localhost/callback")));
         this.Mocker.Use(configurationMock);
 
         // Act & Assert
@@ -86,6 +90,7 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+        this.Mocker.Use(new YaapClientDetail("TestClient", null, new("http://localhost/callback")));
         this.Mocker.Use(configurationMock);
 
         // Act & Assert
@@ -102,6 +107,7 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns((string?)null);
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+        this.Mocker.Use(new YaapClientDetail("TestClient", "TestDescription", null));
         this.Mocker.Use(configurationMock);
 
         // Act
@@ -125,6 +131,7 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns((string?)null);
 
+        this.Mocker.Use(new YaapClientDetail("TestClient", "TestDescription", new("http://localhost/callback")));
         this.Mocker.Use(configurationMock);
 
         // Act & Assert
@@ -141,7 +148,9 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
-        var clientMock = new Mock<BaseYaapClient>(configurationMock.Object, (ILoggerFactory?)null);
+        this.Mocker.Use(new YaapClientDetail("TestClient", "TestDescription", new("http://localhost/callback")));
+
+        var clientMock = new Mock<BaseYaapClient>(configurationMock.Object, this.Mocker.GetRequiredService<YaapClientDetail>(), (ILoggerFactory?)null);
         var builder = Host.CreateEmptyApplicationBuilder(null);
         builder.Services.AddHostedService(_ => clientMock.Object);
 
@@ -167,7 +176,9 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
-        var clientMock = new Mock<BaseYaapClient>(configurationMock.Object, (ILoggerFactory?)null);
+        this.Mocker.Use(new YaapClientDetail("TestClient", "TestDescription", new("http://localhost/callback")));
+
+        var clientMock = new Mock<BaseYaapClient>(configurationMock.Object, this.Mocker.GetRequiredService<YaapClientDetail>(), (ILoggerFactory?)null);
         var builder = Host.CreateEmptyApplicationBuilder(null);
         builder.Services.AddHostedService(_ => clientMock.Object);
 

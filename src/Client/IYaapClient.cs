@@ -1,20 +1,25 @@
-﻿namespace Yaap.Client;
+﻿namespace Yaap.Client.Abstractions;
 
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
-using Yaap.Models;
+using Yaap.Core.Models;
 
 /// <summary>
 /// Defines the contract for a YAAP (Yet Another Awesome Protocol) client.
 /// </summary>
-public interface IYaapClient : IAsyncDisposable, IDisposable
+public interface IYaapClient : IYaapClient<YaapClientDetail>
+{
+}
+/// <summary>
+/// Defines the contract for a YAAP (Yet Another Awesome Protocol) client.
+/// </summary>
+public interface IYaapClient<TClientDetail> : IAsyncDisposable, IDisposable
 {
     /// <summary>
     /// Gets the details of the YAAP client.
     /// </summary>
-    YaapClientDetail Detail { get; }
+    TClientDetail Detail { get; }
 
     /// <summary>
     /// Gets the endpoint URI of the YAAP server.

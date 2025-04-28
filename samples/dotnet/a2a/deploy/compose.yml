@@ -1,0 +1,19 @@
+name: yaap-a2a
+services:
+  orchestrator:
+    image: ${DOCKER_REGISTRY-}yaap-a2a-orchestrator
+    environment:
+      - ASPNETCORE_HTTP_PORTS=7292
+    ports:
+      - "7292:7292"
+
+  teamsagent:
+    image: ${DOCKER_REGISTRY-}yaap-a2a-teamsagent
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5173
+      - Yaap__Client__CallbackUrl=http://teamsagent:5173/a2a/TeamsExpert
+    depends_on:
+      - orchestrator
+
+networks:
+  default:

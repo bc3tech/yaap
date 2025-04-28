@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tba-multiagent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tba-multiagent
+  template:
+    metadata:
+      labels:
+        app: tba-multiagent
+    spec:
+      containers:
+        - name: orchestrator
+          image: yaap-a2a-orchestrator
+          imagePullPolicy: IfNotPresent
+        - name: teamsagent
+          image: yaap-a2a-teamsagent
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+spec:
+  selector:
+    app: tba-multiagent
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: tba-multiagent
+  ports:
+    - port: 7126 # Port on the Service (external)
+      targetPort: 8080 # Port on the Pods (internal)
+      protocol: TCP

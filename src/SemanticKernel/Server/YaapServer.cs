@@ -8,9 +8,8 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 
-using Yaap.Server;
-
-using YaapClientDetail = Models.YaapClientDetail;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 
 /// <summary>
 /// Represents a server that integrates with the Semantic Kernel framework.

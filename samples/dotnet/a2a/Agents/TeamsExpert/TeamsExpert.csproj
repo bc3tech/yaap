@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+	  <UserSecretsId>bd940e53-ff29-49b2-b15d-3328289c1aff</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Api\TeamApi.cs" Link="TeamApi.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\Team.cs" Link="Models\Team.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatus.cs" Link="Models\TeamEventStatus.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusAlliance.cs" Link="Models\TeamEventStatusAlliance.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusAllianceBackup.cs" Link="Models\TeamEventStatusAllianceBackup.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusPlayoff.cs" Link="Models\TeamEventStatusPlayoff.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusRank.cs" Link="Models\TeamEventStatusRank.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusRankRanking.cs" Link="Models\TeamEventStatusRankRanking.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamEventStatusRankSortOrderInfo.cs" Link="Models\TeamEventStatusRankSortOrderInfo.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamRobot.cs" Link="Models\TeamRobot.cs" />
+		<Compile Include="..\..\tba-client\src\TBAAPI.V3Client\Model\TeamSimple.cs" Link="Models\TeamSimple.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="JsonCons.JmesPath" />
+		<PackageReference Include="Azure.Identity" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Agent.Core\Agent.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

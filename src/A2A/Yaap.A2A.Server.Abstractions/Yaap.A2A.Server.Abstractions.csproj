@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Title>YAAP Agent-to-Agent (A2A) Server Abstractions</Title>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="a2a-net.Core" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Server\Yaap.Server.Abstractions.csproj" />
+	</ItemGroup>
+</Project>

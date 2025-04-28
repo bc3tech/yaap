@@ -27,6 +27,7 @@
 		<PackageTags>multi-agent;multiagent;llm;generative-ai;agentic-ai</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseUrl>https://github.com/bc3tech/yaap?tab=GPL-3.0-1-ov-file</PackageLicenseUrl>
+		<PackageReleaseNotes>http://yaap.bc3.tech/blob/main/CHANGELOG</PackageReleaseNotes>
 		
 		<PackageVersion Condition="'$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</PackageVersion>
 		<PackageVersion Condition="'$(VersionSuffix)' == ''">$(Version)</PackageVersion>

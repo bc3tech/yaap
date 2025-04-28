@@ -1,4 +1,4 @@
-﻿namespace Yaap.Client;
+﻿namespace Yaap.Client.Abstractions;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,14 +7,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using Yaap.Client;
 using Yaap.Common;
-using Yaap.Models;
+using Yaap.Core.Models;
+
+using Task = Task;
 
 /// <summary>
 /// Represents an abstract base class for a Yaap client that implements the <see cref="IHostedLifecycleService"/> interface.
 /// Provides lifecycle methods and configuration for interacting with a Yaap server.
 /// </summary>
-/// <typeparam name="T">The type of the response or data handled by the client.</typeparam>
 public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
 {
     private readonly ILogger? _log;
@@ -24,19 +26,16 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     /// Initializes a new instance of the <see cref="BaseYaapClient"/> class.
     /// </summary>
     /// <param name="appConfig">The application configuration used to initialize the client.</param>
+    /// <param name="clientDetail"></param>
     /// <param name="loggerFactory">The logger factory used to create loggers for the client. Optional.</param>
     /// <exception cref="ArgumentNullException">Thrown if required configuration values are null or empty.</exception>
-    protected BaseYaapClient(IConfiguration appConfig, ILoggerFactory? loggerFactory)
+    protected BaseYaapClient(IConfiguration appConfig, YaapClientDetail? clientDetail, ILoggerFactory? loggerFactory)
     {
         _config = appConfig;
+        Throws.IfNullOrWhiteSpace(clientDetail?.Name, "Yaap client name is required.");
+        Throws.IfNullOrWhiteSpace(clientDetail.Description, "Yaap client description is required.");
 
-        this.Detail = new(
-            Throws.IfNullOrWhiteSpace(_config["Yaap:Client:Name"]),
-            Throws.IfNullOrWhiteSpace(_config["Yaap:Client:Description"]),
-            _config["Yaap:Client:CallbackUrl"] is string callbackUrl
-                ? new Uri(callbackUrl)
-                : null
-        );
+        this.Detail = clientDetail!;
 
         this.YaapServerEndpoint = new(Throws.IfNullOrWhiteSpace(_config["Yaap:Server:Endpoint"]));
         _log = loggerFactory?.CreateLogger($"Yaap.Client.{this.Detail.Name}");
@@ -157,6 +156,7 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient
     //     Dispose(disposing: false);
     // }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

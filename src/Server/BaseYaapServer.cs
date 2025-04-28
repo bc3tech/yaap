@@ -1,4 +1,4 @@
-﻿namespace Yaap.Server;
+﻿namespace Yaap.Server.Abstractions;
 
 using System.Text.Json;
 using System.Threading;
@@ -7,7 +7,8 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Models;
+using Yaap.Core.Models;
+using Yaap.Server;
 
 /// <summary>
 /// Represents an abstract base class for a Yaap server that handles client Hellos and Goodbyes and notifications.
@@ -96,7 +97,7 @@ public abstract class BaseYaapServer : IHostedService, IYaapServer
 /// Represents an abstract base class for a Yaap server that handles client Hellos and Goodbyes and notifications.
 /// Implements the <see cref="IHostedService"/> interface for server lifecycle management.
 /// </summary>
-public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServer<THelloResponse> where THelloResponse : notnull
+public abstract class BaseYaapServer<THelloResponse> : IHostedService, IYaapServer<YaapClientDetail, THelloResponse> where THelloResponse : notnull
 {
     private readonly ILogger? _log;
 
