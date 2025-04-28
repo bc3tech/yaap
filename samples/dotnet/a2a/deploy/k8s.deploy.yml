@@ -13,25 +13,11 @@ spec:
         app: tba-multiagent
     spec:
       containers:
-        - name: hub
-          image: signalrhub
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8080
         - name: orchestrator
-          image: orchestrator
-          imagePullPolicy: IfNotPresent
-        - name: districtsagent
-          image: districtsagent
+          image: yaap-a2a-orchestrator
           imagePullPolicy: IfNotPresent
         - name: teamsagent
-          image: teamsagent
-          imagePullPolicy: IfNotPresent
-        - name: eventsagent
-          image: eventsagent
-          imagePullPolicy: IfNotPresent
-        - name: matchesagent
-          image: matchesagent
+          image: yaap-a2a-teamsagent
           imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
