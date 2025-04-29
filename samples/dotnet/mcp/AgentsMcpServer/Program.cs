@@ -10,7 +10,8 @@ using ModelContextProtocol.Protocol.Messages;
 using ModelContextProtocol.Protocol.Types;
 using ModelContextProtocol.Server;
 
-using Yaap.Server;
+using Yaap.Core.Models;
+using Yaap.Server.Abstractions;
 
 ConcurrentDictionary<string, HashSet<IMcpServer>> subscriptions = new();
 
@@ -49,7 +50,7 @@ builder.Services.AddSingleton(subscriptions);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services
-    .AddSingleton<IYaapServer<Empty>, Server>()
+    .AddSingleton<IYaapServer<YaapClientDetail, Empty>, Server>()
     .AddDistributedMemoryCache()
     .AddHttpContextAccessor()
     .AddControllers();
@@ -59,7 +60,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddGrpcReflection();
 }
 
-WebApplication app = ((WebApplicationBuilder)builder).Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<YaapService>();

@@ -6,6 +6,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Core\Yaap.Core.csproj" />
 		<ProjectReference Include="..\..\Server\Yaap.Server.Abstractions.csproj" />
 		<ProjectReference Include="..\Yaap.TestCommon\Yaap.TestCommon.csproj" />
 	</ItemGroup>

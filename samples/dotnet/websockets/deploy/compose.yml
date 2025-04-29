@@ -11,6 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}yaap-ws-teamsagent
     environment:
       - ASPNETCORE_HTTP_PORTS=5173
+      - Yaap__Client__CallbackUrl=ws://teamsagent:5173/ws/agent
     depends_on:
       - orchestrator
 

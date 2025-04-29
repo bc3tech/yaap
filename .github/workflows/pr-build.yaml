@@ -8,8 +8,14 @@ on:
       - "!**/CONTRIBUTING*"
       - "!.github/**"
 
+permissions:
+  contents: read
+
 jobs:
   pr-check:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,4 +27,4 @@ jobs:
           dotnet-version: "8.x"
 
       - name: Build & Run UTs
-        run: dotnet test src/Yaap.sln -c Release
+        run: dotnet test src/Yaap.sln -c ${{ matrix.configuration }}

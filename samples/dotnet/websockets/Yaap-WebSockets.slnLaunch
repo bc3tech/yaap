@@ -3,19 +3,19 @@
     "Name": "Websockets sample",
     "Projects": [
       {
-        "Path": "Agents\\WebSockets\\Orchestrator_WS\\Orchestrator_WS.csproj",
+        "Path": "ConsoleApp\\ConsoleApp.csproj",
         "Action": "Start",
-        "DebugTarget": "Orchestrator_WS"
-      },
-      {
-        "Path": "Agents\\WebSockets\\Teams_WS\\Teams_WS.csproj",
-        "Action": "StartWithoutDebugging",
-        "DebugTarget": "Teams_WS"
-      },
-      {
-        "Path": "TBAStatReader_WS\\ConsoleApp.csproj",
-        "Action": "StartWithoutDebugging",
         "DebugTarget": "ConsoleApp"
+      },
+      {
+        "Path": "Agents\\TeamsExpert\\TeamsExpert.csproj",
+        "Action": "Start",
+        "DebugTarget": "TeamsExpert"
+      },
+      {
+        "Path": "Agents\\Orchestrator\\Orchestrator.csproj",
+        "Action": "Start",
+        "DebugTarget": "Orchestrator"
       }
     ]
   }

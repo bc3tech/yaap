@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "src/**"
+      - "!src/tests/**"
       - "!**/*.md"
       - "!**/CONTRIBUTING*"
 env:

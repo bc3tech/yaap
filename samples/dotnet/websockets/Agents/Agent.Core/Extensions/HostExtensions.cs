@@ -17,13 +17,17 @@ using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 using TBAAPI.V3Client.Client;
 
+using Yaap.Core.Models;
+
 public static class HostExtensions
 {
-    public static HostApplicationBuilder AddExpert<T>(this HostApplicationBuilder b) where T : notnull, Expert
+    public static IHostApplicationBuilder AddExpert<T>(this IHostApplicationBuilder b) where T : notnull, Expert => b.AddExpert<T, IHostApplicationBuilder>();
+    public static R AddExpert<T, R>(this R b) where T : notnull, Expert where R : IHostApplicationBuilder
     {
         ValidateConfigForExpert(b.Configuration);
 
-        b.Services.AddHostedService<T>()
+        b.Services.AddSingleton<T>()
+            .AddHostedService(sp => sp.GetRequiredService<T>())
             .AddHttpClient()
             .AddTransient<DebugHttpHandler>()
             .AddLogging(lb =>
@@ -34,22 +38,26 @@ public static class HostExtensions
                     o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
                     o.IncludeScopes = true;
                 });
-            });
+            })
+            .AddSingleton(new YaapClientDetail(b.Configuration[Constants.Configuration.Paths.AgentName], b.Configuration[Constants.Configuration.Paths.AgentDescription], new(b.Configuration["Yaap:Client:CallbackUrl"]!)));
 
         return b;
     }
 
-    private static void ValidateConfigForExpert(ConfigurationManager configuration)
+    private static void ValidateConfigForExpert(IConfigurationManager configuration)
     {
-        Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.Paths.AgentName]);
-        Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.SignalREndpoint]);
+        var agentName = configuration[Constants.Configuration.Paths.AgentName];
+        Throws.IfNullOrWhiteSpace(agentName);
+        Throws.IfNullOrWhiteSpace(configuration[Constants.Configuration.VariableNames.OrchestratorEndpoint]);
     }
 
-    public static HostApplicationBuilder AddSemanticKernel(this HostApplicationBuilder b, Action<IServiceProvider, OpenAIPromptExecutionSettings>? configurePromptSettings = default, Action<IServiceProvider, IKernelBuilder>? configureKernelBuilder = default, Action<IServiceProvider, Kernel>? configureKernel = default)
+    public static IHostApplicationBuilder AddSemanticKernel(this IHostApplicationBuilder b, Action<IServiceProvider, OpenAIPromptExecutionSettings>? configurePromptSettings = default, Action<IServiceProvider, IKernelBuilder>? configureKernelBuilder = default, Action<IServiceProvider, Kernel>? configureKernel = default)
     {
         ValidateConfigForSemanticKernel(b.Configuration);
 
         b.Services
+            .AddHttpClient()
+            .AddLogging()
             .AddSingleton<PromptExecutionSettings>(sp =>
             {
                 var settings = new OpenAIPromptExecutionSettings
@@ -76,12 +84,12 @@ public static class HostExtensions
                 kernelBuilder.Plugins.AddFromType<Calendar>();
 
                 var endpoint = b.Configuration[Constants.Configuration.VariableNames.AzureOpenAIEndpoint];
-                logger.LogDebug("AzureOpenAIEndpoint: {AzureOpenAIEndpoint}", endpoint);
+                logger.AzureOpenAIEndpointAzureOpenAIEndpoint(endpoint);
                 if (endpoint is not null)
                 {
                     if (b.Configuration["AzureOpenAIKey"] is not null)
                     {
-                        logger.LogDebug("Using AzureOpenAIKey");
+                        logger.UsingAzureOpenAIKey();
                         kernelBuilder.AddAzureOpenAIChatCompletion(
                             b.Configuration[Constants.Configuration.VariableNames.AzureOpenAIModelDeployment]!,
                             endpoint,
@@ -90,7 +98,7 @@ public static class HostExtensions
                     }
                     else
                     {
-                        logger.LogDebug("Using Identity");
+                        logger.UsingIdentity();
                         kernelBuilder.AddAzureOpenAIChatCompletion(
                             b.Configuration[Constants.Configuration.VariableNames.AzureOpenAIModelDeployment]!,
                             endpoint,
@@ -100,7 +108,7 @@ public static class HostExtensions
                 }
 
                 endpoint = b.Configuration["OpenAIEndpoint"];
-                logger.LogDebug("OpenAIEndpoint: {OpenAIEndpoint}", endpoint);
+                logger.OpenAIEndpointOpenAIEndpoint(endpoint);
                 if (endpoint is not null)
                 {
 #pragma warning disable SKEXP0010 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
@@ -119,7 +127,7 @@ public static class HostExtensions
         return b;
     }
 
-    private static void ValidateConfigForSemanticKernel(ConfigurationManager config)
+    private static void ValidateConfigForSemanticKernel(IConfigurationManager config)
     {
         var azureOpenAiEndpointValue = config[Constants.Configuration.VariableNames.AzureOpenAIEndpoint];
 
@@ -148,7 +156,7 @@ public static class HostExtensions
         }
     }
 
-    public static HostApplicationBuilder AddSemanticKernel<TApi>(this HostApplicationBuilder b, Action<IServiceProvider, OpenAIPromptExecutionSettings>? configurePromptSettings = default, Action<IServiceProvider, IKernelBuilder>? configureKernel = default) => b.AddSemanticKernel(configurePromptSettings,
+    public static IHostApplicationBuilder AddSemanticKernel<TApi>(this IHostApplicationBuilder b, Action<IServiceProvider, OpenAIPromptExecutionSettings>? configurePromptSettings = default, Action<IServiceProvider, IKernelBuilder>? configureKernel = default) => b.AddSemanticKernel(configurePromptSettings,
         (sp, kb) =>
         {
             var expert = (TApi)Activator.CreateInstance(typeof(TApi), new Configuration(new Dictionary<string, string>(),

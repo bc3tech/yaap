@@ -11,8 +11,8 @@
 		<PackageReference Include="ModelContextProtocol.AspNetCore" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\src\Server\Yaap.Server.csproj" />
-	  <ProjectReference Include="..\Agents\gRPC\gRPCAgent.Core\gRPCAgent.Core.csproj" />
+	  <ProjectReference Include="..\..\..\..\src\Server\Yaap.Server.Abstractions.csproj" />
+	  <ProjectReference Include="..\Agents\Agent.Core\Agent.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Update="appsettings.Development.json">
