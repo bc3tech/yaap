@@ -25,13 +25,13 @@
 		<PackageProjectUrl>https://github.com/bc3tech/yaap</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/bc3tech/yaap</RepositoryUrl>
 		<PackageTags>multi-agent;multiagent;llm;generative-ai;agentic-ai</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseUrl>https://github.com/bc3tech/yaap?tab=GPL-3.0-1-ov-file</PackageLicenseUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReleaseNotes>http://yaap.bc3.tech/blob/main/CHANGELOG</PackageReleaseNotes>
-		
+
 		<PackageVersion Condition="'$(VersionSuffix)' != ''">$(Version)-$(VersionSuffix)</PackageVersion>
 		<PackageVersion Condition="'$(VersionSuffix)' == ''">$(Version)</PackageVersion>
-</PropertyGroup>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
@@ -49,5 +49,6 @@
 
 	<ItemGroup>
 		<None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="$(MSBuildThisFileDirectory)..\LICENSE" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 </Project>

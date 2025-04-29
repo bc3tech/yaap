@@ -10,7 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Models\Yaap.Core.csproj" />
+	  <ProjectReference Include="..\..\Core\Yaap.Core.csproj" />
 	</ItemGroup>
 
 </Project>

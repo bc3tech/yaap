@@ -14,4 +14,7 @@ static partial class Log
 
     [LoggerMessage(1, LogLevel.Warning, "Plugin {name} not found, but said Goodbye")]
     internal static partial void PluginNameNotFoundButSaidGoodbye(this ILogger logger, string name);
+
+    [LoggerMessage(2, LogLevel.Debug, "{ClientDetail}")]
+    internal static partial void ClientDetail(this ILogger logger, Core.Models.YaapClientDetail ClientDetail);
 }

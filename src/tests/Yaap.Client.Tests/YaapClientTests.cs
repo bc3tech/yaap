@@ -72,7 +72,9 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         this.Mocker.Use(new YaapClientDetail(null, "TestDescription", new("http://localhost/callback")));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         this.Mocker.Use(configurationMock);
 
         // Act & Assert
@@ -89,7 +91,9 @@ public class YaapClientTests(ITestOutputHelper outputHelper) : YaapTest(outputHe
         configurationMock.Setup(c => c["Yaap:Client:CallbackUrl"]).Returns("http://localhost/callback");
         configurationMock.Setup(c => c["Yaap:Server:Endpoint"]).Returns("http://localhost/server");
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         this.Mocker.Use(new YaapClientDetail("TestClient", null, new("http://localhost/callback")));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         this.Mocker.Use(configurationMock);
 
         // Act & Assert

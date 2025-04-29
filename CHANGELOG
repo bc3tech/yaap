@@ -1,5 +1,5 @@
 # Changelog
 
-## 2025.04.28
+## 0.1.27-preview (2025.04.28)
 
-While working on the samples for Agent-to-Agent, updates were made to core abstractions in Server and Client to allow for different "Client Detail" models. In the case of A2A, this allows for `a2a.net`'s `AgentCard` construct to be used instead of the default `ClientDetail` struct. This is a breaking change, as the constructors for `BaseYaapServer` was updated to take the Client Detail object as a parameter. The only change to BaseYaapClient was to change the `Detail` property to be a generic instead of hard-coded to `YaapClientDetail`.
+While working on the samples for Agent-to-Agent, updates were made to core abstractions in Server and Client to allow for different "Client Detail" models. In the case of A2A, this allows for `a2a.net`'s `AgentCard` construct to be used instead of the default `ClientDetail` struct. **This is a breaking change**, as the constructors for `BaseYaapServer` were updated to take the Client Detail object as a parameter. The only change to BaseYaapClient was to change the `Detail` property to be a generic instead of hard-coded to `YaapClientDetail`.

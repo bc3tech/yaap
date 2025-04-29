@@ -135,6 +135,9 @@ public abstract class BaseYaapClient : IHostedLifecycleService, IYaapClient<Agen
         _disposed = true;
     }
 
+    /// <inheritdoc />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:Use ValueTasks correctly", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "<Pending>")]
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
