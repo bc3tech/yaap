@@ -8,6 +8,9 @@ on:
       - "!**/CONTRIBUTING*"
       - "!.github/**"
 
+permissions:
+  contents: read
+
 jobs:
   pr-check:
     strategy:
