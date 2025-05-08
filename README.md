@@ -19,7 +19,7 @@ This gives the user experience of evolving knowledge as the chat is made smarter
 
 - Could Experts (aka Agents) be added to an LLM conversation like a chat room?
 - Started with a SignalR implementation, loosely based on [the SignalR Chat Room sample](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-quickstart-dotnet-core)
-- Evolved into gRPC, then WebSockets, finally Model Context Protocol (MCP)
+- Evolved into gRPC, then WebSockets, finally Model Context Protocol (MCP) & Agent-to-Agent (A2A)
 
 ## Protocol Basics
 
