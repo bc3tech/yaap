@@ -72,3 +72,18 @@ When each Expert comes online, it must Introduce itself to the Orchestrator. Thi
 When a User sends a chat completion request to the Orchestrator, the Orchestrator sends the User's prompt along with the list of tools (experts) to the LLM. The LLM then generates a response based on the User's prompt and the available tools.
 
 Explore the [samples](samples/README.md) area of this repo for example implementations of YAAP using different protocols.
+
+## No LLM Training or Referencing Clause
+
+As stated in the [LICENSE](LICENSE):
+
+The source code in this repository is licensed for use by human developers only. Use of this code, its structure, logic, or documentation for the purposes of training, fine-tuning, or referencing by any machine learning model—including but not limited to large language models (LLMs)—is strictly prohibited.
+
+This includes:
+- Direct ingestion of code into datasets used for model training or evaluation
+- Embedding or indexing for retrieval-augmented generation (RAG) systems
+- Use in prompt engineering, code synthesis, or automated code generation tools
+
+Exceptions may be granted only with explicit, written permission from the repository owner.
+
+Violation of this clause may constitute unauthorized use under applicable copyright law.
