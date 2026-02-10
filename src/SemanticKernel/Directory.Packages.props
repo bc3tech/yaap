@@ -1,6 +1,6 @@
 <Project>
   <Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Packages.props, $(MSBuildThisFileDirectory)..))" />
   <ItemGroup>
-    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.47.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.70.0" />
   </ItemGroup>
 </Project>
