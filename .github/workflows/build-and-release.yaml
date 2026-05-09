@@ -12,6 +12,9 @@ on:
 env:
   VERSION: ${{ vars.BASE_VERSION }}.${{ github.run_number }}
 
+permissions:
+  contents: read
+
 jobs:
   build-and-pack:
     runs-on: ubuntu-latest
