@@ -33,7 +33,7 @@ public abstract class YaapServer<THelloResponse>(Kernel kernel, IDistributedCach
     protected override Task<THelloResponse> HandleHelloCustomAsync(YaapClientDetail clientDetail, CancellationToken cancellationToken)
     {
         _log.AddingExpertNameToSemanticKernelPlugins(clientDetail.Name);
-        _log.ClientDetail(clientDetail);
+        _log.ClientDetail(clientDetail)
 
         kernel.ImportPluginFromFunctions(clientDetail.Name, [kernel.CreateFunctionFromMethod(
             async (string prompt) => await CallExpertAsync(clientDetail, prompt, cancellationToken),

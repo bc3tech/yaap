@@ -26,5 +26,8 @@ jobs:
         with:
           dotnet-version: "8.x"
 
-      - name: Build & Run UTs
-        run: dotnet test src/Yaap.sln -c ${{ matrix.configuration }}
+      - name: Build
+        run: dotnet build src/Yaap.sln -c ${{ matrix.configuration }}
+
+      - name: Run UTs
+        run: dotnet test src/Yaap.sln -c ${{ matrix.configuration }} --no-build
